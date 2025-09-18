@@ -1,0 +1,17 @@
+.book-cover {
+    height: 300px;
+    object-fit: cover;
+}
+.detail-label {
+    font-weight: bold;
+}
+.card-header {
+    background-color: #007bff;
+    color: white;
+}
+.card-title {
+    font-size: 25px;
+    margin-bottom: 20px;
+    text-align: center;
+    font-family: Georgia;
+}

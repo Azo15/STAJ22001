@@ -1,0 +1,14 @@
+.card-header {
+    background-color: #17a2b8; /* Bootstrap's .bg-info color */
+}
+
+.table-hover tbody tr:hover {
+    background-color: #f5f5f5;
+}
+
+.btn-sm {
+    padding: .25rem .5rem;
+    font-size: .875rem;
+    line-height: 1.5;
+    border-radius: .2rem;
+}

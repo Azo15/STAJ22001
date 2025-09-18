@@ -1,0 +1,46 @@
+body { 
+    background-color: #f4f7fa;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; 
+}
+.bg-blue { 
+    background-color: #007bff; 
+}
+.text-blue { 
+    color: #007bff; 
+}
+.sidebar {
+    min-height: 100vh;
+    background-color: #0d6efd;
+    color: white;
+}
+.card-header {
+    background-color: #0d6efd;
+    /* background-color: #000; */
+    color: white;
+}
+.nav-link {
+    color: white !important;
+}
+.dropdown-menu {
+    background-color: #0d6efd;
+    color: white;
+}
+.dropdown-menu .dropdown-item {
+    color: white;
+}
+.dropdown-menu .dropdown-item:hover {
+    background-color: #0056b3;
+}
+.sidebar-logo {
+    padding: 10px;
+    margin-bottom: 20px; /* space under the logo and name */
+    text-align: center;
+}
+.sidebar-logo img {
+    width: 50%; /* Adjust size as needed */
+    height: auto;
+    border-radius: 50%;
+}
+.company-name {
+    margin-top: 7px;
+}

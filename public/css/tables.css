@@ -1,0 +1,31 @@
+table.dataTable thead th, table.dataTable thead td, table.dataTable tbody th, table.dataTable tbody td {
+    border-bottom: none; /* Removes the borders */
+}
+
+.dataTables_filter input {
+    /* Style your search input here */
+    height: 2em; /* Example: Change height */
+    border-radius: 4px; /* Example: Add border radius */
+    border: 1px solid #ddd; /* Example: Add border */
+}
+
+.dataTables_filter label {
+    /* Style the search label */
+    color: #333; /* Example: Change text color */
+    /* Add other styles */
+}
+
+.dataTables_paginate .paginate_button {
+    /* Style your pagination buttons here */
+    padding: 0.5em 1em; /* Example: Change padding */
+    margin: 0 0.25em; /* Example: Change margin */
+    border-radius: 4px; /* Example: Add border radius */
+    background-color: #f8f9fa; /* Example: Change background color */
+    border: 1px solid #ddd; /* Example: Add border */
+}
+
+.dataTables_paginate .paginate_button.current, .dataTables_paginate .paginate_button.current:hover {
+    /* Styles for the active (current) button */
+    background-color: #007bff; /* Example: Change background color */
+    color: white !important; /* Example: Change text color */
+}

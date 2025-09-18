@@ -1,0 +1,10 @@
+/* Custom CSS for genre creation form */
+.card-header {
+    background-color: #007bff; /* Adjust color to match your theme */
+    color: #ffffff;
+}
+
+.btn-success {
+    background-color: #28a745; /* Adjust button color to match your theme */
+    border-color: #28a745;
+}

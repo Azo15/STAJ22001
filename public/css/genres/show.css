@@ -1,0 +1,8 @@
+.card-header {
+    background-color: #6c757d; /* Bootstrap's .bg-secondary color */
+}
+
+.btn-sm {
+    margin-right: 5px;
+    padding: 0.25rem 0.5rem;
+}

@@ -1,0 +1,56 @@
+/* Main Search Bar Style */
+.search-bar-container {
+    display: flex; /* Align inline elements */
+    justify-content: center;
+    align-items: center; /* Align items vertically */
+    flex-wrap: nowrap; /* Prevents items from wrapping */
+    width: 100%; /* Sets width to full width of the parent container */
+    max-width: 600px; /* Maximum width of the search bar */
+    margin: 0 auto; /* Centers the search bar */
+}
+
+.search-bar-container form {
+    width: 100%; /* Makes form use up full width of its container */
+}
+
+.search-bar-container input[type="text"] {
+    flex-grow: 1; /* Input takes up the remaining space */
+    margin-right: 0.5rem; /* Space between input and button */
+    width: 80%; /* Adjust width as needed */
+    padding: 0.5rem;
+    border: 2px solid #007bff; /* Use your theme's primary color */
+    border-radius: 20px; /* Rounded borders for modern look */
+    outline: none;
+    font-size: 1rem;
+    transition: all 0.3s ease-in-out;
+}
+
+.search-bar-container input[type="text"]:focus {
+    border-color: #0056b3; /* Darker shade for focus */
+    box-shadow: 0 0 8px rgba(0, 123, 255, 0.5); /* Glowing effect */
+}
+
+.search-bar-container img {
+    width: 25px; /* Adjust size as needed */
+    height: 25px; /* Adjust size as needed */
+}
+
+/* Adjust the search button if you have one */
+.search-bar-container button {
+    white-space: nowrap; /* Prevents text in button from wrapping */
+    padding: 0.5rem 0.62rem;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    margin-left: -56px; /* Overlap button on the input */
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+    display: inline-block;
+    position: relative;
+    top: -1.5px; /* Adjust vertical alignment */
+}
+
+.search-bar-container button:hover {
+    background-color: #0056b3; /* Darker shade for hover */
+}
