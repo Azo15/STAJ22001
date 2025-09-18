@@ -9,7 +9,7 @@
 * **Kitap Ödünç alma Yönetimi:** Ödünç alma isteklerini görüntüleme, onaylama, reddetme; devam eden ve tamamlanan Ödünç almaları takip etme.
 * **Kullanıcı Yönetimi:** Admin, kütüphaneci ve okuyucu rolleri ile kullanıcı işlemleri.
 * **Yetkilendirme:** Kullanıcı rolleri ile belirli işlemleri sınırlama.
-* **Frontend:** TailwindCSS ve custom CSS ile modern ve kullanıcı dostu tasarım.
+* **Frontend:** CSS , Bootstrap ve JS  ile modern ve kullanıcı dostu tasarım.
 * **Authentication:** Login, register, şifre sıfırlama ve e-posta doğrulama işlemleri.
 
 ## Kurulum
