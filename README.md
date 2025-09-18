@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # STAJ22001
 
 **STAJ22001**, Laravel ile geliştirilmiş bir kütüphane yönetim sistemi uygulamasıdır. Uygulama, kitapları, türleri ve Kitap Ödünç almalarını yönetmek için kullanıcı dostu bir arayüz sunar.
