@@ -58,7 +58,7 @@ php artisan serve
 * Tarayıcıdan `http://127.0.0.1:8000` adresine gidin.
 * Admin veya kütüphaneci rolleri ile giriş yaparak kitap ve Ödünç alma işlemlerini yönetin.
 * Okuyucu rolü ile kitapları görüntüleyin ve Kitap Ödünç alma istekleri oluşturun.
-=======
+
 # Book-Rental-System (BRS)
 Made with Laravel v11
 
