@@ -8,6 +8,7 @@ use App\Http\Controllers\RentalController;
 use App\Http\Middleware\EnsureUserHasRole;
 use App\Http\Controllers\UtilityController;
 
+
 // Route::get('/', function () {
 //     return view('home');
 // });
