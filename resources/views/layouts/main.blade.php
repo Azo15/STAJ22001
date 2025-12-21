@@ -1,333 +1,229 @@
 <!DOCTYPE html>
 <html lang="tr">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kitap Ödünç Alma Sistemi (BRS)</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/css/main.css" rel="stylesheet">
-    <link href="/css/searchbar.css" rel="stylesheet">
-
-    <style>
-        /* Sidebar */
-        .sidebar {
-            background: linear-gradient(180deg, #0d6efd, #6610f2);
-            min-height: 100vh;
-            padding-top: 20px;
-            color: white;
-        }
-
-        .sidebar .nav-link {
-            color: #f1f1f1;
-            font-weight: 500;
-            transition: all 0.3s;
-            border-radius: 8px;
-            margin: 4px 0;
-            padding: 10px 15px;
-        }
-
-        .sidebar .nav-link:hover {
-            background-color: rgba(255, 255, 255, 0.2);
-            color: #fff;
-        }
-
-        .sidebar-logo img {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            display: block;
-            margin: 0 auto 10px;
-        }
-
-        .company-name {
-            text-align: center;
-            font-size: 14px;
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-
-        /* Search bar */
-        .search-bar-container {
-            display: flex;
-            align-items: center;
-            background: #fff;
-            border-radius: 30px;
-            padding: 5px 10px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        .search-bar-container input {
-            border: none;
-            outline: none;
-            flex: 1;
-            padding: 8px 12px;
-            border-radius: 30px;
-        }
-
-        .search-bar-container button {
-            background: transparent;
-            border: none;
-            cursor: pointer;
-        }
-
-        .search-bar-container button img {
-            width: 22px;
-            height: 22px;
-        }
-
-        /* Profil ve bildirim */
-        .btn-outline-secondary {
-            border-radius: 50px !important;
-            padding: 6px 10px;
-            transition: 0.3s;
-        }
-
-        .btn-outline-secondary:hover {
-            background-color: #0d6efd;
-            color: #fff;
-        }
-
-        /* Dropdown menü */
-        .dropdown-menu {
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .dropdown-item:hover {
-            background: #f8f9fa;
-            border-radius: 6px;
-        }
-
-        /* Genel boşluk */
-        main {
-            background: #f8f9fc;
-            min-height: 100vh;
-            padding: 20px;
-        }
-    </style>
-
-    @php
-        $user = auth()->user();
-        $isAdmin = $user && ($user->role === 'admin');
-        $isLibrarian = $user && ($user->role === 'librarian');
-        $isReader = $user && ($user->role === 'reader');
-    @endphp
-
+    <!-- Alpine.js for interactivity -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
+<body class="antialiased bg-slate-50 text-slate-900" x-data="{ sidebarOpen: false }">
 
-<body>
-    <div class="container-fluid">
-        <div class="row">
-            <!-- Sidebar -->
-            <nav class="col-md-2 d-none d-md-block sidebar">
-                <div class="sidebar-sticky">
-                    <ul class="nav flex-column">
-                        <!-- Logo -->
-                        <div class="sidebar-logo">
-                            <a href="/">
-                                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQE6TYJIJDHxuJMM0m2-DYwD_0LKUT6gdWb_A&usqp=CAU"
-                                    alt="Dashboard Logo">
-                            </a>
-                            @auth
-                                <h4 class="company-name">{{ Auth::user()->name }}</h4>
-                                <h6 class="company-name" style="text-transform:uppercase;">{{ Auth::user()->role }}</h6>
-                            @endauth
+    <!-- Mobile Sidebar Backdrop -->
+    <div x-show="sidebarOpen" @click="sidebarOpen = false" class="fixed inset-0 z-40 bg-slate-900/50 backdrop-blur-sm lg:hidden" style="display: none;"></div>
+
+    <!-- Sidebar -->
+    <aside :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'" class="fixed inset-y-0 left-0 z-50 w-72 sidebar-gradient transition-transform duration-300 lg:translate-x-0 shadow-2xl">
+        <div class="flex flex-col h-full">
+            <!-- Brand -->
+            <div class="p-6 border-b border-white/10 flex items-center justify-between lg:justify-center">
+                <a href="/" class="flex flex-col items-center">
+                    <div class="h-16 w-16 rounded-full bg-white/10 flex items-center justify-center mb-3 ring-4 ring-white/5">
+                        <span class="text-3xl">📚</span>
+                    </div>
+                    @auth
+                        <h4 class="font-bold text-lg tracking-wide">{{ Auth::user()->name }}</h4>
+                        <span class="text-xs uppercase tracking-wider text-secondary-500 font-bold bg-white/10 px-2 py-1 rounded mt-1">{{ Auth::user()->role }}</span>
+                    @else
+                        <h4 class="font-bold text-xl tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-fuchsia-400">BRS SYSTEM</h4>
+                    @endauth
+                </a>
+                <button @click="sidebarOpen = false" class="lg:hidden text-white/70 hover:text-white">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+
+            <!-- Navigation -->
+            <nav class="flex-1 px-4 py-6 space-y-2 overflow-y-auto">
+                <p class="px-4 text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Menü</p>
+                
+                <!-- Kitaplar -->
+                <div x-data="{ open: false }">
+                    <button @click="open = !open" class="flex items-center justify-between w-full px-4 py-3 rounded-xl transition-all duration-200 group" :class="open ? 'bg-white/10 text-white' : 'text-slate-300 hover:bg-white/5 hover:text-white'">
+                        <div class="flex items-center gap-3">
+                            <span class="text-xl">📖</span>
+                            <span class="font-medium">Kitaplar</span>
+                        </div>
+                        <svg :class="open ? 'rotate-180' : ''" class="w-4 h-4 transition-transform opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                    <div x-show="open" class="pl-11 pr-4 py-2 space-y-1" style="display: none;">
+                        @auth
+                            @if(auth()->user()->role === 'admin' || auth()->user()->role === 'librarian')
+                                <a href="/books/create" class="block py-2 text-sm text-slate-400 hover:text-sky-300 transition-colors">➕ Yeni Kitap Ekle</a>
+                            @endif
+                        @endauth
+                        <a href="/books" class="block py-2 text-sm text-slate-400 hover:text-sky-300 transition-colors">📑 Kitap Listesi</a>
+                    </div>
+                </div>
+
+                <!-- Türler -->
+                <div x-data="{ open: false }">
+                    <button @click="open = !open" class="flex items-center justify-between w-full px-4 py-3 rounded-xl transition-all duration-200 group" :class="open ? 'bg-white/10 text-white' : 'text-slate-300 hover:bg-white/5 hover:text-white'">
+                        <div class="flex items-center gap-3">
+                            <span class="text-xl">🎭</span>
+                            <span class="font-medium">Türler</span>
+                        </div>
+                        <svg :class="open ? 'rotate-180' : ''" class="w-4 h-4 transition-transform opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                    <div x-show="open" class="pl-11 pr-4 py-2 space-y-1" style="display: none;">
+                        @auth
+                            @if(auth()->user()->role === 'admin' || auth()->user()->role === 'librarian')
+                                <a href="/genres/create" class="block py-2 text-sm text-slate-400 hover:text-sky-300 transition-colors">➕ Yeni Tür Ekle</a>
+                            @endif
+                        @endauth
+                        <a href="/genres" class="block py-2 text-sm text-slate-400 hover:text-sky-300 transition-colors">📂 Tür Listesi</a>
+                    </div>
+                </div>
+
+                @auth
+                    @if(auth()->user()->role === 'admin' || auth()->user()->role === 'librarian')
+                        <div class="my-4 border-t border-white/10"></div>
+                        <p class="px-4 text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Yönetim</p>
+                        
+                        <!-- Ödünç Alma Talepleri -->
+                        <div x-data="{ open: false }">
+                            <button @click="open = !open" class="flex items-center justify-between w-full px-4 py-3 rounded-xl transition-all duration-200 group" :class="open ? 'bg-white/10 text-white' : 'text-slate-300 hover:bg-white/5 hover:text-white'">
+                                <div class="flex items-center gap-3">
+                                    <span class="text-xl">📝</span>
+                                    <span class="font-medium">Talepler</span>
+                                </div>
+                                <svg :class="open ? 'rotate-180' : ''" class="w-4 h-4 transition-transform opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                            </button>
+                            <div x-show="open" class="pl-11 pr-4 py-2 space-y-1" style="display: none;">
+                                <a href="/rentals/pendinglist" class="block py-2 text-sm text-slate-400 hover:text-sky-300 transition-colors">⏳ Bekleyen</a>
+                                <a href="/rentals/approvedlist" class="block py-2 text-sm text-slate-400 hover:text-sky-300 transition-colors">✅ Onaylanan</a>
+                                <a href="/rentals/rejectedlist" class="block py-2 text-sm text-slate-400 hover:text-sky-300 transition-colors">❌ Reddedilen</a>
+                            </div>
                         </div>
 
-                        <!-- Kitaplar -->
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownBooks" role="button"
-                                data-bs-toggle="dropdown" aria-expanded="false">
-                                📚 Kitaplar
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="navbarDropdownBooks">
-                                @auth
-                                    @if($isAdmin || $isLibrarian)
-                                        <li><a class="dropdown-item" href="/books/create">➕ Yeni Kitap Ekle</a></li>
-                                    @endif
-                                @endauth
-                                <li><a class="dropdown-item" href="/books">📖 Kitap Listesi</a></li>
-                            </ul>
-                        </li>
-
-                        <!-- Türler -->
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownGenre" role="button"
-                                data-bs-toggle="dropdown" aria-expanded="false">
-                                🎭 Türler
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="navbarDropdownGenre">
-                                @auth
-                                    @if($isAdmin || $isLibrarian)
-                                        <li><a class="dropdown-item" href="/genres/create">➕ Yeni Tür Ekle</a></li>
-                                    @endif
-                                @endauth
-                                <li><a class="dropdown-item" href="/genres">📂 Tür Listesi</a></li>
-                            </ul>
-                        </li>
-
-                        <!-- Ödünç Alma Talepleri -->
-                        @auth
-                            @if($isAdmin || $isLibrarian)
-                                <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownRentalRequests" role="button"
-                                        data-bs-toggle="dropdown" aria-expanded="false">
-                                        📝 Ödünç Alma Talepleri
-                                    </a>
-                                    <ul class="dropdown-menu" aria-labelledby="navbarDropdownRentalRequests">
-                                        <li><a class="dropdown-item" href="/rentals/pendinglist">⏳ Bekleyen</a></li>
-                                        <li><a class="dropdown-item" href="/rentals/approvedlist">✅ Onaylanan</a></li>
-                                        <li><a class="dropdown-item" href="/rentals/rejectedlist">❌ Reddedilen</a></li>
-                                    </ul>
-                                </li>
-
-                                <!-- Ödünç Almalar -->
-                                <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownRentalsList" role="button"
-                                        data-bs-toggle="dropdown" aria-expanded="false">
-                                        📦 Ödünç Almalar
-                                    </a>
-                                    <ul class="dropdown-menu" aria-labelledby="navbarDropdownRentalsList">
-                                        <li><a class="dropdown-item" href="/rentals/ongoinglist">🚚 Devam Eden Ödünç Almalar</a>
-                                        </li>
-                                        <li><a class="dropdown-item" href="/rentals/returnedlist">📬 Tamamlanan Ödünç
-                                                Almalar</a></li>
-                                        <li><a class="dropdown-item" href="/rentals/overduelist">⏰ Geciken Ödünç Almalar</a>
-                                        </li>
-                                        <li><a class="dropdown-item" href="/rentals/all">📋 Tüm Ödünç Almalar</a></li>
-                                    </ul>
-                                </li>
-
-                                <!-- Okuyucular -->
-                                <li class="nav-item">
-                                    <a class="nav-link" href="/readers" id="navbarReadersList">
-                                        👥 Okuyucu Listesi
-                                    </a>
-                                </li>
-                            @endif
-                        @endauth
-
-                        <!-- Kütüphaneciler -->
-                        @auth
-                            @if($isAdmin)
-                                <li class="nav-item">
-                                    <a class="nav-link" href="/librarians" id="navbarLibrariansList">
-                                        🧑‍🏫 Kütüphaneci Listesi
-                                    </a>
-                                </li>
-                            @endif
-                        @endauth
-                    </ul>
-                </div>
-            </nav>
-
-            <!-- Main -->
-            <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
-                <div class="d-flex justify-content-between align-items-center pt-3 pb-2 mb-3 border-bottom">
-
-                    <!-- Arama Çubuğu -->
-                    <div class="search-bar-container w-50">
-                        <form action="{{ route('search.results') }}" method="GET" class="w-100 d-flex">
-                            <input type="text" id="search-input" name="query" placeholder=" Kitap, yazar, tür ara..."
-                                autocomplete="off" class="w-100">
-                            <button type="submit"><img src="https://cdn-icons-png.flaticon.com/512/3771/3771554.png"
-                                    alt="search-button-icon"></button>
-                            <ul id="suggestions-list"></ul>
-                        </form>
-                    </div>
-
-                    <!-- Sağ Menü -->
-                    <div class="btn-toolbar mb-2 mb-md-0">
-                        @auth
-                            <!-- Bildirimler -->
-                            <div class="btn-group me-2 position-relative">
-                                <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle"
-                                    data-bs-toggle="dropdown">
-                                    <img src="https://cdn-icons-png.freepik.com/512/8184/8184279.png"
-                                        alt="notification-icon" class="rounded-circle" style="width: 30px; height: 30px;">
-                                    <span
-                                        class="badge bg-danger rounded-circle position-absolute top-0 start-100 translate-middle p-1"></span>
-                                </button>
-                                <ul class="dropdown-menu dropdown-menu-end">
-                                    <li><a class="dropdown-item" href="#">Bildirim 1</a></li>
-                                    <li><a class="dropdown-item" href="#">Bildirim 2</a></li>
-                                    <li><a class="dropdown-item" href="#">Bildirim 3</a></li>
-                                </ul>
+                        <!-- İşlemler -->
+                        <div x-data="{ open: false }">
+                            <button @click="open = !open" class="flex items-center justify-between w-full px-4 py-3 rounded-xl transition-all duration-200 group" :class="open ? 'bg-white/10 text-white' : 'text-slate-300 hover:bg-white/5 hover:text-white'">
+                                <div class="flex items-center gap-3">
+                                    <span class="text-xl">📦</span>
+                                    <span class="font-medium">İşlemler</span>
+                                </div>
+                                <svg :class="open ? 'rotate-180' : ''" class="w-4 h-4 transition-transform opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                            </button>
+                            <div x-show="open" class="pl-11 pr-4 py-2 space-y-1" style="display: none;">
+                                <a href="/rentals/ongoinglist" class="block py-2 text-sm text-slate-400 hover:text-sky-300 transition-colors">🚚 Devam Eden</a>
+                                <a href="/rentals/returnedlist" class="block py-2 text-sm text-slate-400 hover:text-sky-300 transition-colors">📬 Tamamlanan</a>
+                                <a href="/rentals/overduelist" class="block py-2 text-sm text-slate-400 hover:text-sky-300 transition-colors">⏰ Geciken</a>
+                                <a href="/rentals/all" class="block py-2 text-sm text-slate-400 hover:text-sky-300 transition-colors">📋 Tümü</a>
                             </div>
-                            <!-- Kullanıcı -->
-                            <div class="btn-group">
-                                <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle"
-                                    data-bs-toggle="dropdown">
-                                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQE6TYJIJDHxuJMM0m2-DYwD_0LKUT6gdWb_A&usqp=CAU"
-                                        alt="User" class="rounded-circle" style="width: 30px; height: 30px;">
-                                </button>
-                                <ul class="dropdown-menu dropdown-menu-end">
-                                    <li><a class="dropdown-item">{{ Auth::user()->name }}</a></li>
-                                    <li><a class="dropdown-item" href="{{ route('profile.edit') }}">Profilim</a></li>
-                                    @auth
-                                        @if($isReader)
-                                            <li><a class="dropdown-item" href="/myrentals">Ödünç Aldıklarım</a></li>
-                                        @endif
-                                    @endauth
-                                    <li>
-                                        <form method="POST" action="{{ route('logout') }}">
-                                            @csrf
-                                            <a class="dropdown-item" href="{{ route('logout') }}"
-                                                onclick="event.preventDefault(); this.closest('form').submit();">
-                                                Çıkış Yap
-                                            </a>
-                                        </form>
-                                    </li>
-                                </ul>
-                            </div>
-                        @endauth
+                        </div>
 
+                         <a href="/readers" class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-300 hover:bg-white/5 hover:text-white transition-all duration-200">
+                            <span class="text-xl">👥</span>
+                            <span class="font-medium">Okuyucular</span>
+                        </a>
 
-                        @if (Route::has('login'))
-                            <nav>
-                                @auth
-                                @else
-                                    <a href="{{ route('login') }}" class="btn btn-primary btn-sm me-2">Giriş Yap</a>
-                                    @if (Route::has('register'))
-                                        <a href="{{ route('register') }}" class="btn btn-success btn-sm">Kayıt Ol</a>
-                                    @endif
-                                @endauth
-                            </nav>
+                        @if(auth()->user()->role === 'admin')
+                             <a href="/librarians" class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-300 hover:bg-white/5 hover:text-white transition-all duration-200">
+                                <span class="text-xl">🧑‍🏫</span>
+                                <span class="font-medium">Kütüphaneciler</span>
+                            </a>
                         @endif
-                    </div>
-                </div>
 
-                @yield('content')
-            </main>
+                    @endif
+                @endauth
+
+            </nav>
+            
+            <!-- Footer User Action -->
+            <div class="p-4 border-t border-white/10">
+                 @auth
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <button type="submit" class="flex items-center gap-3 w-full px-4 py-3 rounded-xl text-red-300 hover:bg-red-500/10 hover:text-red-200 transition-all duration-200">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
+                            <span class="font-medium">Çıkış Yap</span>
+                        </button>
+                    </form>
+                @else
+                    <a href="{{ route('login') }}" class="flex items-center justify-center gap-2 w-full px-4 py-3 rounded-xl bg-white text-indigo-900 font-bold hover:bg-sky-50 transition-all duration-200">
+                        Giriş Yap
+                    </a>
+                @endauth
+            </div>
         </div>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="flex-1 flex flex-col min-h-screen lg:ml-72 bg-slate-50 transition-all duration-300">
+        
+        <!-- Topbar -->
+        <header class="h-20 bg-white/80 backdrop-blur-md border-b border-slate-200 sticky top-0 z-30 px-4 sm:px-8 flex items-center justify-between">
+            <div class="flex items-center gap-4">
+                <button @click="sidebarOpen = true" class="lg:hidden p-2 rounded-lg hover:bg-slate-100 text-slate-600">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7"></path></svg>
+                </button>
+                
+                <!-- Search Bar -->
+                <div class="hidden md:block relative group">
+                    <form action="{{ route('search.results') }}" method="GET">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <svg class="h-5 w-5 text-slate-400 group-hover:text-primary-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                        </div>
+                        <input type="text" name="query" class="block w-64 lg:w-96 pl-10 pr-4 py-2.5 border-none rounded-full bg-slate-100 text-sm focus:ring-2 focus:ring-primary-500 focus:bg-white transition-all shadow-inner" placeholder="Kitap, yazar veya tür ara...">
+                    </form>
+                </div>
+            </div>
+
+            <!-- Right Actions -->
+            <div class="flex items-center gap-4">
+                @auth
+                    <!-- Notifications -->
+                    <button class="relative p-2 rounded-full hover:bg-slate-100 text-slate-500 transition-colors">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg>
+                        <span class="absolute top-1.5 right-1.5 w-2.5 h-2.5 bg-red-500 rounded-full border-2 border-white"></span>
+                    </button>
+                    
+                    <!-- Profile -->
+                    <div x-data="{ open: false }" class="relative">
+                        <button @click="open = !open" class="flex items-center gap-3 hover:bg-slate-100 rounded-full p-1 pr-3 transition-colors">
+                            <img src="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()->name) }}&background=0ea5e9&color=fff" alt="Avatar" class="h-9 w-9 rounded-full shadow-sm">
+                            <div class="hidden md:block text-left">
+                                <p class="text-sm font-semibold text-slate-700 leading-tight">{{ Auth::user()->name }}</p>
+                                <p class="text-xs text-slate-500 capitalize">{{ Auth::user()->role }}</p>
+                            </div>
+                            <svg class="w-4 h-4 text-slate-400 hidden md:block" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </button>
+
+                        <!-- Dropdown -->
+                        <div x-show="open" @click.away="open = false" class="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-xl py-2 border border-slate-100 z-50 text-sm" style="display: none;">
+                            <div class="px-4 py-2 border-b border-slate-50 md:hidden">
+                                <p class="font-medium text-slate-800">{{ Auth::user()->name }}</p>
+                                <p class="text-xs text-slate-500">{{ Auth::user()->email }}</p>
+                            </div>
+                            <a href="{{ route('profile.edit') }}" class="block px-4 py-2 text-slate-600 hover:bg-slate-50 hover:text-primary-600">Profilim</a>
+                            @if(auth()->user()->role === 'reader')
+                                <a href="/myrentals" class="block px-4 py-2 text-slate-600 hover:bg-slate-50 hover:text-primary-600">Ödünç Aldıklarım</a>
+                            @endif
+                            <form method="POST" action="{{ route('logout') }}">
+                                @csrf
+                                <button type="submit" class="w-full text-left px-4 py-2 text-red-600 hover:bg-red-50">Çıkış Yap</button>
+                            </form>
+                        </div>
+                    </div>
+                @else
+                    <a href="{{ route('login') }}" class="text-slate-600 font-medium hover:text-primary-600 px-4">Giriş</a>
+                    <a href="{{ route('register') }}" class="bg-primary-600 hover:bg-primary-700 text-white px-5 py-2.5 rounded-full font-medium transition-all shadow-lg shadow-primary-500/30">Kayıt Ol</a>
+                @endauth
+            </div>
+        </header>
+
+        <!-- Page Content -->
+        <main class="flex-1 p-6 md:p-8 overflow-x-hidden">
+            @yield('content')
+        </main>
+
+        <!-- Footer -->
+        <footer class="bg-white border-t border-slate-200 py-6 text-center text-sm text-slate-500">
+            &copy; {{ date('Y') }} Kitap Ödünç Alma Sistemi. Tüm hakları saklıdır.
+        </footer>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        $(document).ready(function () {
-            $('#search-input').on('input', function () {
-                var query = $(this).val();
-                $.ajax({
-                    url: "{{ route('search.suggestions') }}",
-                    data: { term: query },
-                    success: function (data) {
-                        var suggestionBox = $("#suggestions-list");
-                        suggestionBox.empty();
-                        $.each(data, function (index, suggestion) {
-                            suggestionBox.append(
-                                $("<li>").append(
-                                    $("<a>").attr("href", suggestion.url).text(suggestion.label)
-                                )
-                            );
-                        });
-                    }
-                });
-            });
-        });
-    </script>
-    @include('layouts.footer')
-
 </body>
-
 </html>

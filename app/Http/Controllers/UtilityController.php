@@ -36,6 +36,7 @@ class UtilityController extends Controller
             'popularBookTitle' => $bookDetails?->title ?? 'N/A',
             'popularBookAuthor' => $bookDetails?->author ?? 'N/A',
             'popularBookCover' => $bookDetails?->cover ?? 'https://easydrawingguides.com/wp-content/uploads/2020/10/how-to-draw-an-open-book-featured-image-1200.png',
+            'popularBookId' => $bookDetails?->id,
         ]);
     }
 
