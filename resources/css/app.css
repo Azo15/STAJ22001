@@ -1,3 +1,32 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+    .glass {
+        @apply bg-white/10 backdrop-blur-lg border border-white/20 shadow-xl;
+    }
+    
+    .glass-card {
+        @apply bg-white/70 backdrop-blur-md border border-white/40 shadow-sm transition-all duration-300 hover:shadow-md hover:scale-[1.02];
+    }
+    
+    .sidebar-gradient {
+        @apply bg-gradient-to-b from-indigo-900 via-purple-900 to-slate-900 text-white;
+    }
+
+    .nav-link-active {
+        @apply bg-white/10 border-l-4 border-secondary-500 text-white font-medium;
+    }
+
+    .nav-link-inactive {
+        @apply text-slate-400 hover:bg-white/5 hover:text-white transition-colors duration-200 border-l-4 border-transparent;
+    }
+}
+
+body {
+    font-family: 'Outfit', sans-serif;
+    @apply bg-slate-50 text-slate-800;
+}
