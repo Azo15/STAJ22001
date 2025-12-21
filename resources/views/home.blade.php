@@ -96,7 +96,10 @@
         <!-- Popular Book -->
         <div class="lg:col-span-2 glass-card rounded-2xl p-0 overflow-hidden">
             <div class="p-6 border-b border-slate-100 bg-slate-50/50 flex justify-between items-center">
-                <h3 class="text-lg font-bold text-slate-800">🔥 En Popüler Kitap</h3>
+                <h3 class="text-lg font-bold text-slate-800 flex items-center">
+                    <svg class="w-5 h-5 text-amber-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.879 16.121A3 3 0 1012.015 11L11 14H9c0 .768.293 1.536.879 2.121z"></path></svg>
+                    En Popüler Kitap
+                </h3>
                 <span class="bg-amber-100 text-amber-700 text-xs px-2 py-1 rounded-full font-bold">Çok Okunan</span>
             </div>
             <div class="p-6 flex flex-col sm:flex-row items-center gap-8">
@@ -105,9 +108,14 @@
                     <h4 class="text-2xl font-bold text-slate-900 mb-2">{{ $popularBookTitle }}</h4>
                     <p class="text-slate-500 mb-4 text-lg">Yazar: <span class="font-medium text-slate-700">{{ $popularBookAuthor }}</span></p>
                     <p class="text-slate-600 leading-relaxed mb-6">Bu kitap kütüphanemizdeki okuyucular tarafından en çok tercih edilen eser oldu. Hemen incele ve okumaya başla!</p>
-                    <a href="#" class="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-xl text-white bg-primary-600 hover:bg-primary-700 shadow-lg shadow-primary-500/30 transition-all transform hover:-translate-y-1">
-                        Kitabı İncele
-                    </a>
+                    @if(isset($popularBookId))
+                        <a href="{{ route('books.show', $popularBookId) }}" class="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-xl text-white bg-primary-600 hover:bg-primary-700 shadow-lg shadow-primary-500/30 transition-all transform hover:-translate-y-1">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
+                            Kitabı İncele
+                        </a>
+                    @else
+                        <span class="text-slate-400 text-sm">Detaylar kullanılamıyor</span>
+                    @endif
                 </div>
             </div>
         </div>
@@ -118,20 +126,26 @@
             <ul class="space-y-3">
                 <li>
                     <a href="/books" class="flex items-center p-3 rounded-lg bg-white/5 hover:bg-white/10 transition-colors">
-                        <span class="p-2 bg-primary-500/20 text-primary-300 rounded-lg mr-3">📚</span>
+                        <span class="p-2 bg-primary-500/20 text-primary-300 rounded-lg mr-3">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
+                        </span>
                         <span>Tüm Kitapları Gör</span>
                     </a>
                 </li>
                 <li>
                     <a href="/genres" class="flex items-center p-3 rounded-lg bg-white/5 hover:bg-white/10 transition-colors">
-                        <span class="p-2 bg-secondary-500/20 text-secondary-300 rounded-lg mr-3">🎭</span>
+                        <span class="p-2 bg-secondary-500/20 text-secondary-300 rounded-lg mr-3">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path></svg>
+                        </span>
                         <span>Türlere Göz At</span>
                     </a>
                 </li>
                 @auth
                  <li>
                     <a href="/profile" class="flex items-center p-3 rounded-lg bg-white/5 hover:bg-white/10 transition-colors">
-                        <span class="p-2 bg-emerald-500/20 text-emerald-300 rounded-lg mr-3">👤</span>
+                        <span class="p-2 bg-emerald-500/20 text-emerald-300 rounded-lg mr-3">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+                        </span>
                         <span>Profilimi Düzenle</span>
                     </a>
                 </li>
