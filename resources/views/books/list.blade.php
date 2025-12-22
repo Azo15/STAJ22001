@@ -4,7 +4,7 @@
 
 @include('flashmsg')
 
-<div class="max-w-7xl mx-auto" x-data="{ search: '' }">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" x-data="{ search: '' }">
     
     <!-- Header & Search -->
     <div class="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">

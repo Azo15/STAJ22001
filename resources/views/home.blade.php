@@ -173,7 +173,7 @@
         <div class="glass-card rounded-2xl p-6">
             <h3 class="text-lg font-bold text-slate-800 mb-4 flex items-center">
                 <svg class="w-5 h-5 text-emerald-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z"></path></svg>
-                Son 6 Ayın Kiralama Trendi
+                Son 6 Ayın Ödünç Alma Trendi
             </h3>
             <div class="relative h-64">
                 <canvas id="rentalChart"></canvas>
