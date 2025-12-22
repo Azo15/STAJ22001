@@ -156,4 +156,109 @@
 
 </div>
 
+    <!-- Charts Section -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <!-- Genre Distribution Chart -->
+        <div class="glass-card rounded-2xl p-6">
+            <h3 class="text-lg font-bold text-slate-800 mb-4 flex items-center">
+                <svg class="w-5 h-5 text-indigo-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z"></path></svg>
+                Kitap Tür Dağılımı
+            </h3>
+            <div class="relative h-64">
+                <canvas id="genreChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Rental Trends Chart -->
+        <div class="glass-card rounded-2xl p-6">
+            <h3 class="text-lg font-bold text-slate-800 mb-4 flex items-center">
+                <svg class="w-5 h-5 text-emerald-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z"></path></svg>
+                Son 6 Ayın Kiralama Trendi
+            </h3>
+            <div class="relative h-64">
+                <canvas id="rentalChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Genre Chart
+        const genreCtx = document.getElementById('genreChart').getContext('2d');
+        new Chart(genreCtx, {
+            type: 'doughnut',
+            data: {
+                labels: {!! json_encode($chartGenreLabels) !!},
+                datasets: [{
+                    data: {!! json_encode($chartGenreCounts) !!},
+                    backgroundColor: [
+                        'rgba(244, 63, 94, 0.7)',  // Rose
+                        'rgba(14, 165, 233, 0.7)', // Sky
+                        'rgba(168, 85, 247, 0.7)', // Purple
+                        'rgba(245, 158, 11, 0.7)', // Amber
+                        'rgba(16, 185, 129, 0.7)', // Emerald
+                        'rgba(99, 102, 241, 0.7)', // Indigo
+                    ],
+                    borderWidth: 0,
+                    hoverOffset: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'right',
+                        labels: { font: { family: 'Outfit' }, boxWidth: 12 }
+                    }
+                },
+                cutout: '70%',
+            }
+        });
+
+        // Rental Chart
+        const rentalCtx = document.getElementById('rentalChart').getContext('2d');
+        new Chart(rentalCtx, {
+            type: 'line',
+            data: {
+                labels: {!! json_encode($chartRentalLabels) !!},
+                datasets: [{
+                    label: 'Ödünç Alma',
+                    data: {!! json_encode($chartRentalCounts) !!},
+                    borderColor: '#0ea5e9',
+                    backgroundColor: 'rgba(14, 165, 233, 0.1)',
+                    tension: 0.4,
+                    fill: true,
+                    pointBackgroundColor: '#fff',
+                    pointBorderColor: '#0ea5e9',
+                    pointBorderWidth: 2,
+                    pointRadius: 4,
+                    pointHoverRadius: 6
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: { color: 'rgba(0,0,0,0.05)', drawBorder: false },
+                        ticks: { stepSize: 1, font: { family: 'Outfit' } }
+                    },
+                    x: {
+                        grid: { display: false },
+                        ticks: { font: { family: 'Outfit' } }
+                    }
+                }
+            }
+        });
+    });
+</script>
+
 @endsection

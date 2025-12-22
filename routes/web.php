@@ -42,6 +42,7 @@ Route::get('/search/results', [UtilityController::class, 'searchResults'])->name
 // Ödünç Alma işlemleri (giriş ve doğrulama gerekli)
 Route::middleware(['auth','verified'])->group(function () {
     Route::resource("books.rentals", RentalController::class);
+    Route::post('/books/{book}/reviews', [App\Http\Controllers\ReviewController::class, 'store'])->name('reviews.store');
 });
 
 // Okuyucu rolleri için Ödünç Alma işlemleri

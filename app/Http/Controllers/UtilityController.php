@@ -28,6 +28,22 @@ class UtilityController extends Controller
             $bookDetails = Books::find($popularBook->books_id);
         }
 
+        // Grafik Verileri: Türlere göre kitap sayıları
+        $genreData = Genre::withCount('books')->get();
+        $genreLabels = $genreData->pluck('name');
+        $genreCounts = $genreData->pluck('books_count');
+
+        // Grafik Verileri: Son 6 ayın kiralama istatistikleri
+        $rentalData = Rental::selectRaw('DATE_FORMAT(created_at, "%Y-%m") as month, count(*) as count')
+            ->groupBy('month')
+            ->orderBy('month', 'desc')
+            ->limit(6)
+            ->get()
+            ->reverse();
+        
+        $rentalLabels = $rentalData->pluck('month');
+        $rentalCounts = $rentalData->pluck('count');
+
         return view('home', [
             'numberOfReaders' => $numberOfReaders,
             'numberOfGenres' => $numberOfGenres,
@@ -37,6 +53,10 @@ class UtilityController extends Controller
             'popularBookAuthor' => $bookDetails?->author ?? 'N/A',
             'popularBookCover' => $bookDetails?->cover ?? 'https://easydrawingguides.com/wp-content/uploads/2020/10/how-to-draw-an-open-book-featured-image-1200.png',
             'popularBookId' => $bookDetails?->id,
+            'chartGenreLabels' => $genreLabels,
+            'chartGenreCounts' => $genreCounts,
+            'chartRentalLabels' => $rentalLabels,
+            'chartRentalCounts' => $rentalCounts,
         ]);
     }
 
