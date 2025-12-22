@@ -4,41 +4,92 @@
 
 @include('flashmsg')
 
-<div class="container">
-    <h2>{{ $user->name }} adlı kullanıcının Ödünç Almaları</h2>
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Ödünç Alma ID</th>
-                <th>Kitap Başlığı</th>
-                <th>Kitap Yazarı</th>
-                <th>Durum</th>
-                <th>Talep Tarihi</th>
-                <th>Başlangıç Tarihi</th>
-                <th>Son Teslim Tarihi</th>
-                <th>İade Tarihi</th>
-            </tr>
-        </thead>
-        <tbody>
-            @if ($rentals->isEmpty())
-            <tr>
-                <td colspan="8">Ödünç Alma bulunamadı.</td>
-            </tr>
-            @endif
+@extends('layouts.main')
 
-            @foreach ($rentals as $rental)
-            <tr>
-                <td>{{ $rental->id }}</td>
-                <td>{{ $rental->book->title }}</td>
-                <td>{{ $rental->book->author }}</td>
-                <td>{{ $rental->status }}</td>
-                <td>{{ $rental->rental_requested_at }}</td>
-                <td>{{ $rental->rental_start_at }}</td>
-                <td>{{ $rental->rental_due_at }}</td>
-                <td>{{ $rental->returned_at }}</td>
-            </tr>
-            @endforeach
-        </tbody>
-    </table>
+@section('content')
+
+@include('flashmsg')
+
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between mb-8">
+        <div>
+            <a href="{{ route('readers.showreaders') }}" class="text-sm font-medium text-slate-500 hover:text-indigo-600 transition-colors flex items-center mb-2">
+                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+                Okuyucu Listesine Dön
+            </a>
+            <h2 class="text-3xl font-bold text-slate-900"><span class="bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-violet-600">{{ $user->name }}</span> adlı kullanıcının talepleri</h2>
+        </div>
+    </div>
+
+    <div class="glass-card rounded-2xl overflow-hidden border border-slate-200/60">
+        <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+                <thead>
+                    <tr class="bg-slate-50/50 border-b border-slate-200 text-xs uppercase tracking-wider text-slate-500 font-semibold">
+                        <th class="px-6 py-4">ID</th>
+                        <th class="px-6 py-4">Kitap</th>
+                        <th class="px-6 py-4">Durum</th>
+                        <th class="px-6 py-4">Talep Tarihi</th>
+                        <th class="px-6 py-4">Başlangıç</th>
+                        <th class="px-6 py-4">Son Teslim</th>
+                        <th class="px-6 py-4">İade</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100">
+                    @forelse($rentals as $rental)
+                    <tr class="hover:bg-slate-50/80 transition-colors duration-150">
+                        <td class="px-6 py-4 font-mono text-sm text-slate-500">#{{ $rental->id }}</td>
+                        <td class="px-6 py-4">
+                            <div class="flex flex-col">
+                                <span class="font-bold text-slate-800">{{ $rental->book->title }}</span>
+                                <span class="text-xs text-slate-500">{{ $rental->book->author }}</span>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4">
+                            @php
+                                $statusClasses = [
+                                    'Pending Review' => 'bg-amber-100 text-amber-800',
+                                    'Approved' => 'bg-teal-100 text-teal-800',
+                                    'Returned' => 'bg-emerald-100 text-emerald-800',
+                                    'Overdue' => 'bg-rose-100 text-rose-800',
+                                    'Cancelled' => 'bg-slate-100 text-slate-800',
+                                ];
+                                $statusClass = $statusClasses[$rental->status] ?? 'bg-gray-100 text-gray-800';
+                                
+                                $statusLabels = [
+                                    'Pending Review' => 'İncelemede',
+                                    'Approved' => 'Onaylandı',
+                                    'Returned' => 'İade Edildi',
+                                    'Overdue' => 'Gecikmiş',
+                                    'Cancelled' => 'İptal Edildi',
+                                ];
+                                $statusLabel = $statusLabels[$rental->status] ?? $rental->status;
+                            @endphp
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {{ $statusClass }}">
+                                {{ $statusLabel }}
+                            </span>
+                        </td>
+                        <td class="px-6 py-4 text-sm text-slate-600">{{ $rental->rental_requested_at }}</td>
+                        <td class="px-6 py-4 text-sm text-slate-600">{{ $rental->rental_start_at ? \Carbon\Carbon::parse($rental->rental_start_at)->format('d.m.Y H:i') : '-' }}</td>
+                        <td class="px-6 py-4 text-sm text-slate-600">{{ $rental->rental_due_at ? \Carbon\Carbon::parse($rental->rental_due_at)->format('d.m.Y H:i') : '-' }}</td>
+                        <td class="px-6 py-4 text-sm text-slate-600">
+                            @if($rental->returned_at)
+                                <span class="text-emerald-600 font-medium">{{ \Carbon\Carbon::parse($rental->returned_at)->format('d.m.Y H:i') }}</span>
+                            @else
+                                -
+                            @endif
+                        </td>
+                    </tr>
+                    @empty
+                    <tr>
+                        <td colspan="7" class="px-6 py-12 text-center text-slate-500">
+                            Bu kullanıcıya ait ödünç alma kaydı bulunamadı.
+                        </td>
+                    </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
 @endsection
