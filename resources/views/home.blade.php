@@ -154,7 +154,7 @@
         </div>
     </div>
 
-</div>
+
 
     <!-- Charts Section -->
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
