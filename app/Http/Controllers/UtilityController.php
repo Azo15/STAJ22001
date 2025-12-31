@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\Genre;
 use App\Models\Books;
 use App\Models\Rental;
+use Illuminate\Support\Facades\Auth;
 
 class UtilityController extends Controller
 {
@@ -137,6 +138,13 @@ class UtilityController extends Controller
         $books = $bookQuery->get();
 
         // Kitap koleksiyonuyla birlikte görünümü döndür
+        // Kitap koleksiyonuyla birlikte görünümü döndür
         return view('search.results', compact('books'));
+    }
+
+    public function markNotificationsRead()
+    {
+        Auth::user()->unreadNotifications->markAsRead();
+        return response()->json(['success' => true]);
     }
 }

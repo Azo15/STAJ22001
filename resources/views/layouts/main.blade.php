@@ -84,11 +84,49 @@
                     </div>
 
                     @auth
-                        <!-- Notification Icon (Restored) -->
-                        <button class="relative p-2 text-slate-400 hover:text-indigo-600 transition-colors rounded-full hover:bg-slate-50">
-                            <span class="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-rose-500 ring-2 ring-white"></span>
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg>
-                        </button>
+                        <!-- Notification Icon (Working) -->
+                        <div class="relative" x-data="{ open: false, unread: {{ auth()->user()->unreadNotifications->count() > 0 ? 'true' : 'false' }} }">
+                            <button @click="open = !open; if(unread) { fetch('{{ route('notifications.read') }}', { method: 'POST', headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}' } }); unread = false; }" class="relative p-2 text-slate-400 hover:text-indigo-600 transition-colors rounded-full hover:bg-slate-50">
+                                <span x-show="unread" class="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-rose-500 ring-2 ring-white"></span>
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg>
+                            </button>
+
+                            <!-- Notification Dropdown -->
+                            <div x-show="open" 
+                                 @click.away="open = false" 
+                                 x-transition:enter="transition ease-out duration-200"
+                                 x-transition:enter-start="opacity-0 translate-y-2"
+                                 x-transition:enter-end="opacity-100 translate-y-0"
+                                 x-transition:leave="transition ease-in duration-150"
+                                 x-transition:leave-start="opacity-100 translate-y-0"
+                                 x-transition:leave-end="opacity-0 translate-y-2"
+                                 class="absolute right-0 mt-2 w-80 bg-white rounded-xl shadow-2xl border border-slate-100 overflow-hidden z-50">
+                                <div class="px-4 py-3 border-b border-slate-50 bg-slate-50/50 flex justify-between items-center">
+                                    <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">Bildirimler</span>
+                                    <span class="text-xs text-indigo-600 font-medium cursor-pointer" @click="unread = false">Tümünü Okundu Say</span>
+                                </div>
+                                <div class="max-h-96 overflow-y-auto">
+                                    @forelse(auth()->user()->unreadNotifications as $notification)
+                                        <a href="{{ $notification->data['url'] ?? '#' }}" class="block px-4 py-3 hover:bg-indigo-50 transition-colors border-b border-slate-50 last:border-0 group">
+                                            <div class="flex items-start gap-3">
+                                                <div class="mt-1 p-1.5 rounded-full {{ isset($notification->data['status']) && $notification->data['status'] == 'rejected' ? 'bg-red-100 text-red-600' : (isset($notification->data['status']) && $notification->data['status'] == 'approved' ? 'bg-green-100 text-green-600' : 'bg-blue-100 text-blue-600') }}">
+                                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                                </div>
+                                                <div>
+                                                    <p class="text-sm text-slate-700 font-medium group-hover:text-indigo-700 leading-snug">{{ $notification->data['message'] }}</p>
+                                                    <p class="text-xs text-slate-400 mt-1">{{ $notification->created_at->diffForHumans() }}</p>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    @empty
+                                        <div class="p-8 text-center text-slate-400">
+                                            <svg class="w-12 h-12 mx-auto mb-3 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"></path></svg>
+                                            <p class="text-sm">Yeni bildiriminiz yok.</p>
+                                        </div>
+                                    @endforelse
+                                </div>
+                            </div>
+                        </div>
 
                         <!-- User Dropdown -->
                         <div class="relative group">

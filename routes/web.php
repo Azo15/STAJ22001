@@ -9,16 +9,8 @@ use App\Http\Middleware\EnsureUserHasRole;
 use App\Http\Controllers\UtilityController;
 
 
-// Route::get('/', function () {
-//     return view('home');
-// });
-// ->middleware(['auth','verified']); // Ana sayfa görünümü (doğrulama gerektirir)
 
 Route::get('/', [UtilityController::class, 'dashboard'])->name('dashboard');
-
-Route::get('/test', function () {
-    return view('test');
-})->middleware(['auth','verified', 'role:admin,librarian']); // Test sayfası (sadece admin/kütüphaneci)
 
 Route::get('/forbidden', function () {
     return view('forbidden');
@@ -38,6 +30,7 @@ Route::resource("genres", GenreController::class);
 // Arama işlemleri
 Route::get('/search/suggestions', [UtilityController::class, 'searchSuggetions'])->name('search.suggestions');
 Route::get('/search/results', [UtilityController::class, 'searchResults'])->name('search.results');
+Route::post('/notifications/read', [UtilityController::class, 'markNotificationsRead'])->name('notifications.read')->middleware('auth');
 
 // Ödünç Alma işlemleri (giriş ve doğrulama gerekli)
 Route::middleware(['auth','verified'])->group(function () {

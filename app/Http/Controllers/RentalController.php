@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Carbon;
+use App\Notifications\RentalStatusUpdated;
 
 class RentalController extends Controller
 {
@@ -116,6 +117,9 @@ class RentalController extends Controller
         $book = Books::findOrFail($rental->books_id);
         $book->decrement('in_stock');
 
+        // Notification
+        $rental->user->notify(new RentalStatusUpdated($rental, 'approved'));
+
         return redirect()->route('rentals.pendinglist')->with('success', 'Ödünç Alma başarıyla onaylandı.');
     }
 
@@ -126,6 +130,10 @@ class RentalController extends Controller
         $rental->update([
             'status' => 'Cancelled',
         ]);
+
+        // Notification
+        $rental->user->notify(new RentalStatusUpdated($rental, 'rejected'));
+
         return redirect()->route('rentals.pendinglist')->with('success', 'Ödünç Alma reddedildi.');
     }
 
@@ -166,6 +174,7 @@ class RentalController extends Controller
             $rental->update([
                 'status' => 'Overdue'
             ]);
+            $rental->user->notify(new RentalStatusUpdated($rental, 'overdue'));
         }
 
         return back()->with('success', 'Gecikmiş Ödünç Almalar güncellendi.');
