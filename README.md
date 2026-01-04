@@ -15,7 +15,7 @@ Kullanıcılar kitapları keşfedebilir, ödünç alma talebinde bulunabilir ve 
 - **Glassmorphism UI:** Kartlar, tablolar ve modallar için buzlu cam efekti.
 - **Responsive Tasarım:** Mobil, tablet ve masaüstü uyumlu akıcı arayüz.
 - **İnteraktif Elementler:** Alpine.js ile güçlendirilmiş dinamik dropdownlar, arama önerileri ve bildirimler.
-
+ 
 ### 📚 Kitap ve Tür Yönetimi
 - **Kitap İşlemleri:** Ekleme, düzenleme, silme, kapak resmi yükleme ve detaylı görüntüleme.
 - **Kategorizasyon:** Tür (Genre) bazlı filtreleme ve yönetim.
