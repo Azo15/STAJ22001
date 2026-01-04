@@ -87,4 +87,4 @@ Projeyi yerel ortamınızda çalıştırmak için aşağıdaki adımları izleyi
 *   **Admin:** `admin@kutuphane.com` / `password` (Varsayılan şifre genellikle 'password' veya kodu kontrol ediniz)
 
 ---
-*Geliştirici: İsmail (Azo15) - Staj Projesi 2024*
+*Geliştirici:Azo İsmail (Azo15) - Staj Projesi 2024*
