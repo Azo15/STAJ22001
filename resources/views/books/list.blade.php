@@ -53,7 +53,7 @@
                     <tr class="hover:bg-slate-50/80 transition-colors duration-150 group" x-show="!search || '{{ strtolower($book->title) }}'.includes(search.toLowerCase()) || '{{ strtolower($book->author) }}'.includes(search.toLowerCase())">
                         <td class="px-6 py-4 w-24">
                             <div class="relative h-24 w-16 shadow-md rounded overflow-hidden transform group-hover:scale-110 transition-transform duration-300">
-                                <img src="{{ $book->cover }}" alt="Kapak" class="h-full w-full object-cover">
+                                <img src="{{ $book->cover }}" onerror="this.onerror=null;this.src='https://easydrawingguides.com/wp-content/uploads/2020/10/how-to-draw-an-open-book-featured-image-1200.png';" alt="Kapak" class="h-full w-full object-cover">
                             </div>
                         </td>
                         <td class="px-6 py-4">
