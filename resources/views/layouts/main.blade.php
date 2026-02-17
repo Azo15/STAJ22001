@@ -8,7 +8,7 @@
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 </head>
-<body class="font-sans antialiased bg-slate-50 text-slate-900 selection:bg-fuchsia-500 selection:text-white">
+<body class="font-sans antialiased bg-slate-50 text-slate-900 selection:bg-fuchsia-500 selection:text-white flex flex-col min-h-screen">
 
     <!-- Top Navigation Bar -->
     <nav class="sticky top-0 z-50 bg-white border-b border-slate-200 shadow-sm">
