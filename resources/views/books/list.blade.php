@@ -26,11 +26,22 @@
             <p class="text-slate-500 mt-1">Kütüphanedeki tüm kitapları buradan yönetebilir ve inceleyebilirsiniz.</p>
         </div>
         
-        <div class="relative w-full md:w-72">
-            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <svg class="h-5 w-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+        <div class="flex gap-4 w-full md:w-auto">
+            <div class="relative w-full md:w-72">
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <svg class="h-5 w-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                </div>
+                <input type="text" x-model="search" class="block w-full pl-10 pr-4 py-3 border border-slate-200 rounded-xl bg-white text-sm focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition-all shadow-sm group-hover:shadow-md" placeholder="Tabloda ara...">
             </div>
-            <input type="text" x-model="search" class="block w-full pl-10 pr-4 py-3 border border-slate-200 rounded-xl bg-white text-sm focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition-all shadow-sm group-hover:shadow-md" placeholder="Tabloda ara...">
+
+            @auth
+                @if(auth()->user()->role === 'admin' || auth()->user()->role === 'librarian')
+                    <a href="{{ route('books.create') }}" class="inline-flex items-center px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl shadow-lg shadow-indigo-500/30 transition-all transform hover:-translate-y-0.5 whitespace-nowrap">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                        Yeni Kitap Ekle
+                    </a>
+                @endif
+            @endauth
         </div>
     </div>
 

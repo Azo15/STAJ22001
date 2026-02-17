@@ -151,6 +151,41 @@ class UtilityController extends Controller
         return back();
     }
 
+    public function privacy()
+    {
+        return view('pages.privacy');
+    }
+
+    public function terms()
+    {
+        return view('pages.terms');
+    }
+
+    public function contact()
+    {
+        return view('pages.contact');
+    }
+
+    public function sendContactMessage(Request $request)
+    {
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|max:255',
+            'subject' => 'required|string|max:255',
+            'message' => 'required|string',
+        ]);
+
+        $contactMessage = ContactMessage::create($validated);
+
+        // Notify Admins and Librarians
+        $adminsAndLibrarians = User::whereIn('role', ['admin', 'librarian'])->get();
+        if ($adminsAndLibrarians->count() > 0) {
+            Notification::send($adminsAndLibrarians, new NewContactMessage($contactMessage));
+        }
+
+        return back()->with('success', 'Mesajınız başarıyla gönderildi. En kısa sürede size dönüş yapacağız.');
+    }
+
     public function showContactMessage($id)
     {
         if (Auth::user()->role !== 'admin' && Auth::user()->role !== 'librarian') {
