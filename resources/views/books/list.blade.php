@@ -4,7 +4,20 @@
 
 @include('flashmsg')
 
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" x-data="{ search: '' }">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" 
+     x-data="{ 
+        search: '', 
+        hasResults: true,
+        updateResults() {
+            this.$nextTick(() => {
+                // tbody içindeki satırları kontrol et
+                const rows = this.$refs.tbody ? Array.from(this.$refs.tbody.querySelectorAll('tr')) : [];
+                // Eğer en az bir satır görünürse (style.display !== 'none'), sonuç var demektir
+                this.hasResults = rows.some(row => row.style.display !== 'none');
+            });
+        }
+     }"
+     x-init="$watch('search', () => updateResults())">
     
     <!-- Header & Search -->
     <div class="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
@@ -35,7 +48,7 @@
                         <th class="px-6 py-4 text-right">İşlemler</th>
                     </tr>
                 </thead>
-                <tbody class="divide-y divide-slate-100">
+                <tbody class="divide-y divide-slate-100" x-ref="tbody">
                     @foreach($books as $book)
                     <tr class="hover:bg-slate-50/80 transition-colors duration-150 group" x-show="!search || '{{ strtolower($book->title) }}'.includes(search.toLowerCase()) || '{{ strtolower($book->author) }}'.includes(search.toLowerCase())">
                         <td class="px-6 py-4 w-24">
@@ -118,7 +131,7 @@
         </div>
         
         <!-- Empty State -->
-        <div x-show="!$el.querySelectorAll('tbody tr').length" class="p-12 text-center" style="display: none;">
+        <div x-show="!hasResults && search.length > 0" class="p-12 text-center" style="display: none;">
             <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-slate-100 mb-4">
                 <svg class="w-8 h-8 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
             </div>

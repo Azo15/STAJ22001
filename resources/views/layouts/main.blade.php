@@ -44,7 +44,7 @@
                                         <a href="/rentals/pendinglist" class="block px-4 py-2 text-sm text-slate-600 hover:bg-indigo-50 hover:text-indigo-600 font-medium">Bekleyen Talepler</a>
                                         <a href="/rentals/approvedlist" class="block px-4 py-2 text-sm text-slate-600 hover:bg-indigo-50 hover:text-indigo-600 font-medium">Onaylananlar</a>
                                         <a href="/rentals/ongoinglist" class="block px-4 py-2 text-sm text-slate-600 hover:bg-indigo-50 hover:text-indigo-600 font-medium">Devam Edenler</a>
-                                        <a href="/rentals/overdue" class="block px-4 py-2 text-sm text-red-600 hover:bg-red-50 hover:text-red-700 font-medium">Geciken İadeler</a>
+                                        <a href="{{ route('rentals.overduelist') }}" class="block px-4 py-2 text-sm text-red-600 hover:bg-red-50 hover:text-red-700 font-medium">Geciken İadeler</a>
                                         <div class="px-4 py-2 border-b border-slate-50 mb-1 mt-1">
                                             <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Kullanıcılar</span>
                                         </div>
@@ -66,7 +66,8 @@
                         <input 
                             type="text" 
                             x-model="search"
-                            @input.debounce.300ms="if(search.length > 2) { fetch('/search/suggestions?term=' + search).then(res => res.json()).then(data => { results = data; open = true; }) } else { open = false }"
+                            @keydown.enter="window.location.href = '{{ route('search.results') }}?query=' + search"
+                            @input.debounce.300ms="if(search.length > 2) { fetch('{{ route('search.suggestions') }}?term=' + search).then(res => res.json()).then(data => { results = data; open = true; }) } else { open = false }"
                             placeholder="Kitap ara..." 
                             class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 transition-all text-sm outline-none font-medium"
                         >
