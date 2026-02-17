@@ -21,7 +21,7 @@ class UtilityController extends Controller
         // Ödünç Alma sayısına göre en popüler kitabı al
         $popularBook = Rental::select('books_id')
             ->groupBy('books_id')
-            ->orderByRaw('COUNT(*) ASC')
+            ->orderByRaw('COUNT(*) DESC')
             ->first();
 
         $bookDetails = null;

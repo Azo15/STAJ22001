@@ -94,27 +94,38 @@
     <!-- Featured Section -->
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <!-- Popular Book -->
-        <div class="lg:col-span-2 glass-card rounded-2xl p-0 overflow-hidden">
-            <div class="p-6 border-b border-slate-100 bg-slate-50/50 flex justify-between items-center">
-                <h3 class="text-lg font-bold text-slate-800 flex items-center">
+        <div class="lg:col-span-2 glass-card rounded-2xl p-0 overflow-hidden relative group">
+            <div class="absolute top-0 right-0 w-64 h-64 bg-amber-500/10 rounded-full blur-3xl -mr-32 -mt-32 pointer-events-none"></div>
+            
+            <div class="p-6 border-b border-slate-100 bg-slate-50/50 flex justify-between items-center relative">
+                <h3 class="text-lg font-bold bg-clip-text text-transparent bg-gradient-to-r from-amber-600 to-orange-600 flex items-center">
                     <svg class="w-5 h-5 text-amber-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.879 16.121A3 3 0 1012.015 11L11 14H9c0 .768.293 1.536.879 2.121z"></path></svg>
                     En Popüler Kitap
                 </h3>
-                <span class="bg-amber-100 text-amber-700 text-xs px-2 py-1 rounded-full font-bold">Çok Okunan</span>
+                <span class="bg-amber-100 text-amber-700 text-xs px-3 py-1 rounded-full font-bold shadow-sm">Çok Okunan</span>
             </div>
-            <div class="p-6 flex flex-col sm:flex-row items-center gap-8">
-                <img src="{{ $popularBookCover }}" alt="kapak" class="w-32 h-48 object-cover rounded-lg shadow-lg rotate-2 hover:rotate-0 transition-transform duration-300">
+            
+            <div class="p-8 flex flex-col sm:flex-row items-center gap-8 relative z-10">
+                <div class="relative group-hover:scale-105 transition-transform duration-500">
+                    <div class="absolute -inset-1 bg-gradient-to-r from-amber-600 to-orange-600 rounded-lg blur opacity-25 group-hover:opacity-50 transition duration-500"></div>
+                    <img src="{{ $popularBookCover }}" alt="kapak" class="relative w-36 h-52 object-cover rounded-lg shadow-2xl">
+                </div>
+                
                 <div class="flex-1 text-center sm:text-left">
                     <h4 class="text-2xl font-bold text-slate-900 mb-2">{{ $popularBookTitle }}</h4>
-                    <p class="text-slate-500 mb-4 text-lg">Yazar: <span class="font-medium text-slate-700">{{ $popularBookAuthor }}</span></p>
-                    <p class="text-slate-600 leading-relaxed mb-6">Bu kitap kütüphanemizdeki okuyucular tarafından en çok tercih edilen eser oldu. Hemen incele ve okumaya başla!</p>
+                    <p class="text-slate-500 mb-4 text-base font-medium">Yazar: <span class="text-slate-800">{{ $popularBookAuthor }}</span></p>
+                    
+                    <p class="text-slate-600 leading-relaxed mb-6 text-sm">Bu kitap kütüphanemizdeki okuyucular tarafından en çok tercih edilen eser oldu. Popülerliği her geçen gün artıyor, hemen incele!</p>
+                    
                     @if(isset($popularBookId))
-                        <a href="{{ route('books.show', $popularBookId) }}" class="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-xl text-white bg-primary-600 hover:bg-primary-700 shadow-lg shadow-primary-500/30 transition-all transform hover:-translate-y-1">
-                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
-                            Kitabı İncele
-                        </a>
+                        <div class="flex flex-wrap gap-3 justify-center sm:justify-start">
+                            <a href="{{ route('books.show', $popularBookId) }}" class="inline-flex items-center justify-center px-6 py-2.5 bg-slate-900 text-white text-sm font-bold rounded-xl hover:bg-slate-800 shadow-lg shadow-slate-900/20 transition-all transform hover:-translate-y-0.5">
+                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
+                                Kitabı İncele
+                            </a>
+                        </div>
                     @else
-                        <span class="text-slate-400 text-sm">Detaylar kullanılamıyor</span>
+                        <span class="text-slate-400 text-sm italic">Detaylar şu anda görüntülenemiyor.</span>
                     @endif
                 </div>
             </div>
