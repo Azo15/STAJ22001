@@ -99,4 +99,49 @@ class ProfileController extends Controller
 
         return back()->with('success', 'Librarian role added.');
     }
+
+    /**
+     * Admin: Kullanıcı düzenleme formunu göster.
+     */
+    public function adminEdit(User $user)
+    {
+        return view('profile.admin-edit', compact('user'));
+    }
+
+    /**
+     * Admin: Kullanıcı bilgilerini güncelle.
+     */
+    public function adminUpdate(Request $request, User $user)
+    {
+        $validated = $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email,' . $user->id],
+            'role' => ['required', 'string', 'in:admin,librarian,reader'],
+        ]);
+
+        $user->update($validated);
+
+        // Eğer kullanıcı okuyucu ise okuyucu listesine, kütüphaneci ise kütüphaneci listesine yönlendir.
+        // Basitçe geldiği listeye göre veya role göre yönlendirme yapabiliriz.
+        if ($user->role === 'librarian') {
+            return redirect()->route('librarians.showlibrarians')->with('success', 'Kullanıcı başarıyla güncellendi.');
+        } else {
+            return redirect()->route('readers.showreaders')->with('success', 'Kullanıcı başarıyla güncellendi.');
+        }
+    }
+
+    /**
+     * Admin: Kullanıcıyı sil.
+     */
+    public function adminDestroy(User $user)
+    {
+        // Kendini silmeyi engelle
+        if (auth()->id() === $user->id) {
+            return back()->with('error', 'Kendi hesabınızı buradan silemezsiniz.');
+        }
+
+        $user->delete();
+
+        return back()->with('success', 'Kullanıcı başarıyla silindi.');
+    }
 }

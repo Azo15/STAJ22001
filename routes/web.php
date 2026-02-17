@@ -83,4 +83,9 @@ Route::middleware(['auth','verified', 'role:admin'])->group(function () {
     Route::get('/librarians', [ProfileController::class, 'showLibrarians'])->name('librarians.showlibrarians');
     Route::patch('/librarians/{user}/delete', [ProfileController::class, 'changeLibrarianToReader'])->name('librarians.deletelibrarian');
     Route::patch('/readers/{user}/promote', [ProfileController::class, 'changeReaderToLibrarian'])->name('readers.promotelibrarian');
+
+    // Tam Kullanıcı Yönetimi
+    Route::get('/users/{user}/edit', [ProfileController::class, 'adminEdit'])->name('users.edit');
+    Route::patch('/users/{user}', [ProfileController::class, 'adminUpdate'])->name('users.update');
+    Route::delete('/users/{user}', [ProfileController::class, 'adminDestroy'])->name('users.destroy');
 });
