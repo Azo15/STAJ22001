@@ -29,7 +29,7 @@
                     <div class="h-20 w-20 rounded-2xl bg-gradient-to-br from-indigo-600 to-fuchsia-600 flex items-center justify-center shadow-lg shadow-indigo-500/30 transform group-hover:rotate-6 transition-all duration-300">
                         <span class="text-4xl">📚</span>
                     </div>
-                    <span class="mt-4 text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-fuchsia-600">BRS SYSTEM</span>
+                    <span class="mt-4 text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-fuchsia-600">BOOKA SYSTEM</span>
                 </a>
             </div>
 

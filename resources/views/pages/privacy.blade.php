@@ -12,7 +12,7 @@
 
         <div class="prose prose-slate max-w-none">
             <p class="text-lg text-slate-600 mb-6">
-                BRS Kütüphane Sistemi ("Biz", "Sistemimiz") olarak, gizliliğinize önem veriyoruz. Bu Gizlilik Politikası, web sitemizi ve hizmetlerimizi kullanırken kişisel verilerinizin nasıl toplandığını, kullanıldığını ve korunduğunu açıklar.
+                BOOKA Kütüphane Sistemi ("Biz", "Sistemimiz") olarak, gizliliğinize önem veriyoruz. Bu Gizlilik Politikası, web sitemizi ve hizmetlerimizi kullanırken kişisel verilerinizin nasıl toplandığını, kullanıldığını ve korunduğunu açıklar.
             </p>
 
             <h3 class="text-xl font-semibold text-slate-800 mt-8 mb-4">1. Toplanan Bilgiler</h3>

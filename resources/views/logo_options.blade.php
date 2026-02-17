@@ -18,7 +18,7 @@
                         <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
                     </div>
                     <div class="flex flex-col">
-                        <span class="text-2xl font-bold text-slate-900 leading-none tracking-tight">BRS</span>
+                        <span class="text-2xl font-bold text-slate-900 leading-none tracking-tight">BOOKA</span>
                         <span class="text-[0.6rem] font-bold text-blue-500 uppercase tracking-widest leading-none mt-0.5">Library System</span>
                     </div>
                 </div>
@@ -35,7 +35,7 @@
                         <div class="absolute -top-1 -right-1 w-3 h-3 bg-amber-400 rounded-full border-2 border-white"></div>
                     </div>
                     <div class="flex flex-col">
-                        <span class="text-3xl font-serif font-bold text-indigo-950 leading-none">BRS</span>
+                        <span class="text-3xl font-serif font-bold text-indigo-950 leading-none">BOOKA</span>
                     </div>
                 </div>
                 <p class="mt-6 text-sm text-slate-500 text-center px-8">Serif font ve ikon kullanımı ile daha akademik ve ciddi bir duruş. Lacivert ve altın tonları.</p>
@@ -51,7 +51,7 @@
                         <div class="w-2 h-8 bg-teal-500 rounded-sm mt-2"></div>
                         <div class="w-2 h-8 bg-cyan-500 rounded-sm"></div>
                     </div>
-                    <span class="text-2xl font-black text-slate-800 tracking-tighter">brs<span class="text-teal-500">.</span></span>
+                    <span class="text-2xl font-black text-slate-800 tracking-tighter">booka<span class="text-teal-500">.</span></span>
                 </div>
                 <p class="mt-6 text-sm text-slate-500 text-center px-8">Kitap sırtlarını temsil eden soyut geometrik şekiller. Küçük harf kullanımı ile modern ve ulaşılabilir.</p>
             </div>

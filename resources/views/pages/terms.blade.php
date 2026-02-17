@@ -12,7 +12,7 @@
 
         <div class="prose prose-slate max-w-none">
             <p class="text-lg text-slate-600 mb-6">
-                BRS Kütüphane Sistemi'ne hoş geldiniz. Hizmetlerimizi kullanarak aşağıdaki şartları kabul etmiş sayılırsınız. Lütfen bu metni dikkatlice okuyunuz.
+                BOOKA Kütüphane Sistemi'ne hoş geldiniz. Hizmetlerimizi kullanarak aşağıdaki şartları kabul etmiş sayılırsınız. Lütfen bu metni dikkatlice okuyunuz.
             </p>
 
             <h3 class="text-xl font-semibold text-slate-800 mt-8 mb-4">1. Hizmet Kullanımı</h3>
