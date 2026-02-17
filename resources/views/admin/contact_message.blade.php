@@ -23,17 +23,25 @@
                 </div>
             </div>
             <div class="flex gap-2">
-                <a href="mailto:{{ $message->email }}?subject=Ynt: {{ $message->subject }}" class="inline-flex items-center px-4 py-2 bg-indigo-600 text-white text-sm font-bold rounded-xl hover:bg-indigo-700 transition-colors shadow-lg shadow-indigo-500/20">
-                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
-                    E-posta ile Yanıtla
-                </a>
+                <!-- Redundant button removed -->
             </div>
         </div>
 
         <!-- Content -->
         <div class="p-8">
-            <div class="prose max-w-none text-slate-600 leading-relaxed">
+            <div class="prose max-w-none text-slate-600 leading-relaxed mb-8">
                 {!! nl2br(e($message->message)) !!}
+            </div>
+
+            <div class="bg-indigo-50 rounded-xl p-6 border border-indigo-100 flex items-center justify-between">
+                <div>
+                    <h3 class="text-lg font-bold text-indigo-900">Bu mesajı yanıtlamak mı istiyorsunuz?</h3>
+                    <p class="text-indigo-600 text-sm mt-1">Kullanıcının e-posta adresine doğrudan yanıt verebilirsiniz.</p>
+                </div>
+                <a href="mailto:{{ $message->email }}?subject=Ynt: {{ $message->subject }}" class="inline-flex items-center px-6 py-3 bg-indigo-600 text-white font-bold rounded-xl hover:bg-indigo-700 transition-colors shadow-lg shadow-indigo-500/20">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                    E-posta Gönder
+                </a>
             </div>
         </div>
     </div>

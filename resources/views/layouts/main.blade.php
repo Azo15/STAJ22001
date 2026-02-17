@@ -86,9 +86,11 @@
 
                     @auth
                         <!-- Notification Icon (Working) -->
-                        <div class="relative" x-data="{ open: false, unread: {{ auth()->user()->unreadNotifications->count() > 0 ? 'true' : 'false' }} }" @click.away="open = false">
-                            <button @click="open = !open; if(unread) { fetch('{{ route('notifications.read') }}', { method: 'POST', headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}' } }); unread = false; }" class="relative p-2 text-slate-400 hover:text-indigo-600 transition-colors rounded-full hover:bg-slate-50">
-                                <span x-show="unread" class="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-rose-500 ring-2 ring-white"></span>
+                        <div class="relative" x-data="{ open: false }" @click.away="open = false">
+                            <button @click="open = !open" class="relative p-2 text-slate-400 hover:text-indigo-600 transition-colors rounded-full hover:bg-slate-50">
+                                @if(auth()->user()->unreadNotifications->count() > 0)
+                                    <span class="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-rose-500 ring-2 ring-white"></span>
+                                @endif
                                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg>
                             </button>
 
@@ -105,7 +107,10 @@
                                 <div class="px-4 py-3 border-b border-slate-50 bg-slate-50/50 flex justify-between items-center">
                                     <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">Bildirimler</span>
                                     @if(auth()->user()->unreadNotifications->count() > 0)
-                                        <span class="text-xs text-indigo-600 font-medium cursor-pointer hover:text-indigo-800" @click="fetch('{{ route('notifications.read') }}', { method: 'POST', headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}' } }); unread = false;">Tümünü Okundu Say</span>
+                                        <form action="{{ route('notifications.read') }}" method="POST" class="inline">
+                                            @csrf
+                                            <button type="submit" class="text-xs text-indigo-600 font-medium cursor-pointer hover:text-indigo-800">Tümünü Okundu Say</button>
+                                        </form>
                                     @endif
                                 </div>
                                 <div class="max-h-96 overflow-y-auto">

@@ -148,42 +148,7 @@ class UtilityController extends Controller
     public function markNotificationsRead()
     {
         Auth::user()->unreadNotifications->markAsRead();
-        return response()->json(['success' => true]);
-    }
-
-    public function privacy()
-    {
-        return view('pages.privacy');
-    }
-
-    public function terms()
-    {
-        return view('pages.terms');
-    }
-
-    public function contact()
-    {
-        return view('pages.contact');
-    }
-
-    public function sendContactMessage(Request $request)
-    {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|max:255',
-            'subject' => 'required|string|max:255',
-            'message' => 'required|string',
-        ]);
-
-        $contactMessage = ContactMessage::create($validated);
-
-        // Notify Admins and Librarians
-        $adminsAndLibrarians = User::whereIn('role', ['admin', 'librarian'])->get();
-        if ($adminsAndLibrarians->count() > 0) {
-            Notification::send($adminsAndLibrarians, new NewContactMessage($contactMessage));
-        }
-
-        return back()->with('success', 'Mesajınız başarıyla gönderildi. En kısa sürede size dönüş yapacağız.');
+        return back();
     }
 
     public function showContactMessage($id)
@@ -197,6 +162,15 @@ class UtilityController extends Controller
         // Mark as read if not already
         if (!$message->is_read) {
             $message->update(['is_read' => true]);
+        }
+
+        // Find the specific notification for this message and mark it as read
+        $notification = Auth::user()->notifications()
+            ->where('data->url', route('admin.contact.show', $id))
+            ->first();
+
+        if ($notification) {
+            $notification->markAsRead();
         }
 
         return view('admin.contact_message', compact('message'));
