@@ -44,4 +44,53 @@ class Rental extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    /**
+     * Mevcut duruma karşılık gelen State nesnesini döndürür.
+     */
+    public function state(): \App\Patterns\State\RentalState
+    {
+        return match ($this->status) {
+            'Pending Review' => new \App\Patterns\State\PendingState(),
+            'Approved' => new \App\Patterns\State\ApprovedState(),
+            'Returned' => new \App\Patterns\State\ReturnedState(),
+            'Overdue' => new \App\Patterns\State\OverdueState(),
+            'Cancelled' => new \App\Patterns\State\CancelledState(),
+            'Rejected' => new \App\Patterns\State\RejectedState(),
+            default => new \App\Patterns\State\PendingState(),
+        };
+    }
+
+    public function getStateAttribute()
+    {
+        $state = $this->state();
+        $state->setRental($this);
+        return $state;
+    }
+
+    // State Pattern Actions
+    public function approve()
+    {
+        $this->state->approve();
+    }
+
+    public function reject()
+    {
+        $this->state->reject();
+    }
+
+    public function returnBook()
+    {
+        $this->state->returnBook();
+    }
+
+    public function cancel()
+    {
+        $this->state->cancel();
+    }
+
+    public function markOverdue()
+    {
+        $this->state->markOverdue();
+    }
 }

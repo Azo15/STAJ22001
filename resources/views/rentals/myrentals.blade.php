@@ -72,24 +72,26 @@
                             @endif
                         </td>
                         <td class="px-6 py-4 text-center">
-                             @if ((is_null($rental->returned_at)) && ($rental->status != 'Pending Review') && ($rental->status != 'Cancelled'))
+                            @if($rental->status == 'Approved' || $rental->status == 'Overdue')
                                 <form action="{{ route('rentals.return', $rental->id) }}" method="POST">
                                     @csrf
                                     @method('PATCH')
-                                    <button type="submit" class="inline-flex items-center px-3 py-1.5 bg-amber-50 hover:bg-amber-100 text-amber-700 text-xs font-bold rounded-lg transition-colors border border-amber-200">
+                                    <button type="submit" class="inline-flex items-center px-3 py-1.5 bg-amber-50 hover:bg-amber-100 text-amber-700 text-xs font-bold rounded-lg transition-colors border border-amber-200 shadow-sm">
                                         Kitabı İade Et
                                     </button>
                                 </form>
-                            @elseif ($rental->status == 'Pending Review')
+                            @elseif($rental->status == 'Pending Review')
                                 <form action="{{ route('rentals.cancelrequest', $rental->id) }}" method="POST">
                                     @csrf
                                     @method('PATCH')
-                                    <button type="submit" class="inline-flex items-center px-3 py-1.5 bg-rose-50 hover:bg-rose-100 text-rose-600 text-xs font-bold rounded-lg transition-colors border border-rose-200">
+                                    <button type="submit" class="inline-flex items-center px-3 py-1.5 bg-rose-50 hover:bg-rose-100 text-rose-600 text-xs font-bold rounded-lg transition-colors border border-rose-200 shadow-sm">
                                         Talebi İptal Et
                                     </button>
                                 </form>
-                            @elseif ($rental->status == 'Cancelled' || $rental->status == 'Returned')
-                                <span class="text-xs text-slate-400 font-medium">İşlem Yok</span>
+                            @else
+                                <span class="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-medium bg-slate-100 text-slate-500">
+                                    İşlem Yok
+                                </span>
                             @endif
                         </td>
                     </tr>

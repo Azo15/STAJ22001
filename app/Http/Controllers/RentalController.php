@@ -108,33 +108,36 @@ class RentalController extends Controller
         // $this->authorize('manage');
         $rental = Rental::findOrFail($id);
 
-        $rental->update([
-            'rental_start_at' => now(),
-            'rental_due_at' => now()->addDays(7),
-            'status' => 'Approved',
-        ]);
-
-        $book = Books::findOrFail($rental->books_id);
-        $book->decrement('in_stock');
-
-        // Notification
-        $rental->user->notify(new RentalStatusUpdated($rental, 'approved'));
-
-        return redirect()->route('rentals.pendinglist')->with('success', 'Ödünç Alma başarıyla onaylandı.');
+        try {
+            $rental->approve();
+            
+            $book = Books::findOrFail($rental->books_id);
+            $book->decrement('in_stock');
+            
+            // Notification
+            $rental->user->notify(new RentalStatusUpdated($rental, 'approved'));
+            
+            return redirect()->route('rentals.pendinglist')->with('success', 'Ödünç Alma başarıyla onaylandı.');
+        } catch (\Exception $e) {
+            return back()->with('error', $e->getMessage());
+        }
     }
 
     public function reject($id)
     {
         // $this->authorize('manage');
         $rental = Rental::findOrFail($id);
-        $rental->update([
-            'status' => 'Cancelled',
-        ]);
+        
+        try {
+            $rental->reject();
+            
+            // Notification
+            $rental->user->notify(new RentalStatusUpdated($rental, 'rejected'));
 
-        // Notification
-        $rental->user->notify(new RentalStatusUpdated($rental, 'rejected'));
-
-        return redirect()->route('rentals.pendinglist')->with('success', 'Ödünç Alma reddedildi.');
+            return redirect()->route('rentals.pendinglist')->with('success', 'Ödünç Alma reddedildi.');
+        } catch (\Exception $e) {
+            return back()->with('error', $e->getMessage());
+        }
     }
 
     public function returnBook(Request $request, $id)
@@ -142,15 +145,17 @@ class RentalController extends Controller
         $this->authorize('create', Rental::class);
         
         $rental = Rental::findOrFail($id);
-        $rental->update([
-            'returned_at' => now(),
-            'status' => 'Returned',
-        ]);
 
-        $book = Books::findOrFail($rental->books_id);
-        $book->increment('in_stock');
+        try {
+            $rental->returnBook();
+            
+            $book = Books::findOrFail($rental->books_id);
+            $book->increment('in_stock');
 
-        return back()->with('success', 'Kitap başarıyla iade edildi.');
+            return back()->with('success', 'Kitap başarıyla iade edildi.');
+        } catch (\Exception $e) {
+            return back()->with('error', $e->getMessage());
+        }
     }
 
     public function cancelRentalRequest(Request $request, $id)
@@ -158,26 +163,40 @@ class RentalController extends Controller
         $this->authorize('create', Rental::class);
         
         $rental = Rental::findOrFail($id);
-        $rental->update([
-            'status' => 'Cancelled',
-        ]);
-        return back()->with('success', 'Ödünç Alma talebi iptal edildi.');
+
+        try {
+            $rental->cancel();
+            return back()->with('success', 'Ödünç Alma talebi iptal edildi.');
+        } catch (\Exception $e) {
+            return back()->with('error', $e->getMessage());
+        }
     }
 
     public function markOverdue(Request $request)
     {
         // $this->authorize('manage');
         
+        // Sadece 'Approved' durumundaki ve süresi geçmiş kayıtları alıyoruz.
+        // Logic zaten ApprovedState içinde kontrol edilecek ama veritabanı sorgusuyla filtrelemek performans için iyi.
         $rentals = Rental::where('status', 'Approved')->where('rental_due_at', '<', now())->whereNull('returned_at')->get();
 
+        $updatedCount = 0;
         foreach ($rentals as $rental) {
-            $rental->update([
-                'status' => 'Overdue'
-            ]);
-            $rental->user->notify(new RentalStatusUpdated($rental, 'overdue'));
+            try {
+                $rental->markOverdue();
+                $rental->user->notify(new RentalStatusUpdated($rental, 'overdue'));
+                $updatedCount++;
+            } catch (\Exception $e) {
+                // Toplu işlemde tekil hataları yoksay veya logla
+                continue; 
+            }
         }
 
-        return back()->with('success', 'Gecikmiş Ödünç Almalar güncellendi.');
+        if ($updatedCount > 0) {
+            return back()->with('success', $updatedCount . ' adet gecikmiş Ödünç Alma güncellendi.');
+        }
+        
+        return back()->with('info', 'Gecikmiş Ödünç Alma bulunamadı.');
     }
 
     public function showRejected()
