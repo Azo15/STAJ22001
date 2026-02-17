@@ -73,6 +73,9 @@ Route::middleware(['auth','verified', 'role:admin,librarian'])->group(function (
     // Okuyucu yönetimi
     Route::get('/readers', [ProfileController::class, 'showReaders'])->name('readers.showreaders');
     Route::get('/readers/{user}/rentals', [RentalController::class, 'showReaderRentals'])->name('readers.rentals');
+
+    // İletişim Mesajları
+    Route::get('/admin/contact-message/{id}', [UtilityController::class, 'showContactMessage'])->name('admin.contact.show');
 });
 
 // Sadece admin için kütüphaneci yönetimi

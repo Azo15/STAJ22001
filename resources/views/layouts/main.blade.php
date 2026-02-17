@@ -160,7 +160,10 @@
                             </div>
                         </div>
                     @else
-                        <a href="{{ route('login') }}" class="px-6 py-2.5 rounded-xl bg-indigo-600 text-white text-sm font-bold hover:bg-indigo-700 transition-all shadow-lg shadow-indigo-500/20 transform hover:-translate-y-0.5">Giriş Yap</a>
+                        <div class="flex items-center gap-2">
+                            <a href="{{ route('login') }}" class="px-5 py-2.5 rounded-xl text-slate-600 font-semibold hover:text-indigo-600 hover:bg-slate-50 transition-all">Giriş Yap</a>
+                            <a href="{{ route('register') }}" class="px-5 py-2.5 rounded-xl bg-indigo-600 text-white font-bold hover:bg-indigo-700 transition-all shadow-lg shadow-indigo-500/20 transform hover:-translate-y-0.5">Kaydol</a>
+                        </div>
                     @endauth
 
                     <!-- Mobile Menu Button -->

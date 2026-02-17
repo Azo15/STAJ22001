@@ -53,7 +53,7 @@ class NewContactMessage extends Notification
     {
         return [
             'message' => 'Yeni İletişim Mesajı: ' . $this->contactMessage->subject,
-            'url' => '#', // Admin panelinde mesajları listelemek için bir rota yapılabilir
+            'url' => route('admin.contact.show', $this->contactMessage->id),
             'status' => 'info',
             'sender' => $this->contactMessage->name,
             'email' => $this->contactMessage->email,

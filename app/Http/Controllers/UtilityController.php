@@ -185,4 +185,20 @@ class UtilityController extends Controller
 
         return back()->with('success', 'Mesajınız başarıyla gönderildi. En kısa sürede size dönüş yapacağız.');
     }
+
+    public function showContactMessage($id)
+    {
+        if (Auth::user()->role !== 'admin' && Auth::user()->role !== 'librarian') {
+            abort(403);
+        }
+
+        $message = ContactMessage::findOrFail($id);
+
+        // Mark as read if not already
+        if (!$message->is_read) {
+            $message->update(['is_read' => true]);
+        }
+
+        return view('admin.contact_message', compact('message'));
+    }
 }
