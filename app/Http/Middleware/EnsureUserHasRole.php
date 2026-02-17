@@ -31,9 +31,15 @@ class EnsureUserHasRole
         // return redirect('/books');
         // return redirect('auth.login');
 
-        // Eğer rol belirtilmemişse veya kullanıcı misafir ise isteği devam ettir
-        if (empty($roles) || !Auth::check()) {
+        // Eğer rol belirtilmemişse (örneğin global olarak çalışıyorsa ve özel bir rol istenmiyorsa)
+        // isteğin devam etmesine izin ver. Bu sayede login sayfası gibi herkese açık sayfalar çalışır.
+        if (empty($roles)) {
             return $next($request);
+        }
+
+        // Rol belirtilmiş ama kullanıcı giriş yapmamışsa login sayfasına yönlendir
+        if (!Auth::check()) {
+            return redirect()->route('login');
         }
 
         // Kullanıcının gerekli rollerden hiçbirine sahip olmaması durumunda yönlendir
