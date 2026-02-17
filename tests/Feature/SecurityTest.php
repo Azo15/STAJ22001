@@ -7,8 +7,11 @@ use App\Models\User;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\EnsureUserHasRole;
 
+use Illuminate\Foundation\Testing\RefreshDatabase;
+
 class SecurityTest extends TestCase
 {
+    use RefreshDatabase;
     protected function setUp(): void
     {
         parent::setUp();
