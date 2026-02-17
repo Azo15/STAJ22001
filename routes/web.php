@@ -35,6 +35,7 @@ Route::get('/search/results', [UtilityController::class, 'searchResults'])->name
 Route::get('/privacy', [UtilityController::class, 'privacy'])->name('privacy');
 Route::get('/terms', [UtilityController::class, 'terms'])->name('terms');
 Route::get('/contact', [UtilityController::class, 'contact'])->name('contact');
+Route::post('/contact', [UtilityController::class, 'sendContactMessage'])->name('contact.send');
 Route::post('/notifications/read', [UtilityController::class, 'markNotificationsRead'])->name('notifications.read')->middleware('auth');
 
 // Ödünç Alma işlemleri (giriş ve doğrulama gerekli)

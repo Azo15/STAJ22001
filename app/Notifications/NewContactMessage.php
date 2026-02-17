@@ -7,16 +7,20 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
+use App\Models\ContactMessage;
+
 class NewContactMessage extends Notification
 {
     use Queueable;
 
+    public $contactMessage;
+
     /**
      * Create a new notification instance.
      */
-    public function __construct()
+    public function __construct(ContactMessage $contactMessage)
     {
-        //
+        $this->contactMessage = $contactMessage;
     }
 
     /**
@@ -26,7 +30,7 @@ class NewContactMessage extends Notification
      */
     public function via(object $notifiable): array
     {
-        return ['mail'];
+        return ['database'];
     }
 
     /**
@@ -48,7 +52,11 @@ class NewContactMessage extends Notification
     public function toArray(object $notifiable): array
     {
         return [
-            //
+            'message' => 'Yeni İletişim Mesajı: ' . $this->contactMessage->subject,
+            'url' => '#', // Admin panelinde mesajları listelemek için bir rota yapılabilir
+            'status' => 'info',
+            'sender' => $this->contactMessage->name,
+            'email' => $this->contactMessage->email,
         ];
     }
 }

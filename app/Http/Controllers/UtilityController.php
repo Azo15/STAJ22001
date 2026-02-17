@@ -8,6 +8,9 @@ use App\Models\Genre;
 use App\Models\Books;
 use App\Models\Rental;
 use Illuminate\Support\Facades\Auth;
+use App\Models\ContactMessage;
+use App\Notifications\NewContactMessage;
+use Illuminate\Support\Facades\Notification;
 
 class UtilityController extends Controller
 {
@@ -161,5 +164,25 @@ class UtilityController extends Controller
     public function contact()
     {
         return view('pages.contact');
+    }
+
+    public function sendContactMessage(Request $request)
+    {
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|max:255',
+            'subject' => 'required|string|max:255',
+            'message' => 'required|string',
+        ]);
+
+        $contactMessage = ContactMessage::create($validated);
+
+        // Notify Admins and Librarians
+        $adminsAndLibrarians = User::whereIn('role', ['admin', 'librarian'])->get();
+        if ($adminsAndLibrarians->count() > 0) {
+            Notification::send($adminsAndLibrarians, new NewContactMessage($contactMessage));
+        }
+
+        return back()->with('success', 'Mesajınız başarıyla gönderildi. En kısa sürede size dönüş yapacağız.');
     }
 }
