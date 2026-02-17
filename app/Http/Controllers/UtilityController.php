@@ -48,6 +48,19 @@ class UtilityController extends Controller
         $rentalLabels = $rentalData->pluck('month');
         $rentalCounts = $rentalData->pluck('count');
 
+        // Yeni Eklenen Kitaplar (Son 5)
+        $latestBooks = Books::latest()->take(5)->get();
+
+        // Günün Sözü (Rastgele)
+        $quotes = [
+            ['text' => 'Bir kitap, içimizdeki donmuş deniz için bir balta olmalıdır.', 'author' => 'Franz Kafka'],
+            ['text' => 'Kitaplar, dünyayı yerinden oynatmaya yarayan manivelalardır.', 'author' => 'Victor Hugo'],
+            ['text' => 'Okumak, nerede olursanız olun sizi evinizde hissettirir.', 'author' => 'Mason Cooley'],
+            ['text' => 'Bir kütüphane, hayal gücünün bir sığınağıdır.', 'author' => 'Stephen King'],
+            ['text' => 'Kitapsız yaşamak, kör, sağır ve dilsiz yaşamaktır.', 'author' => 'Seneca'],
+        ];
+        $quote = $quotes[array_rand($quotes)];
+
         return view('home', [
             'numberOfReaders' => $numberOfReaders,
             'numberOfGenres' => $numberOfGenres,
@@ -57,6 +70,8 @@ class UtilityController extends Controller
             'popularBookAuthor' => $bookDetails?->author ?? 'N/A',
             'popularBookCover' => $bookDetails?->cover ?? 'https://easydrawingguides.com/wp-content/uploads/2020/10/how-to-draw-an-open-book-featured-image-1200.png',
             'popularBookId' => $bookDetails?->id,
+            'latestBooks' => $latestBooks,
+            'quote' => $quote,
             'chartGenreLabels' => $genreLabels,
             'chartGenreCounts' => $genreCounts,
             'chartRentalLabels' => $rentalLabels,

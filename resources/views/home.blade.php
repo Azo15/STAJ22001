@@ -103,6 +103,14 @@
         </div>
     </div>
 
+    <!-- Quote Section -->
+    <div class="glass-card p-8 rounded-2xl relative overflow-hidden text-center group">
+        <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-indigo-500 to-transparent opacity-50"></div>
+        <svg class="w-10 h-10 text-slate-300 mx-auto mb-4" fill="currentColor" viewBox="0 0 24 24"><path d="M14.017 21L14.017 18C14.017 16.8954 14.9124 16 16.017 16H19.017C19.5693 16 20.017 15.5523 20.017 15V9C20.017 8.44772 19.5693 8 19.017 8H15.017C14.4647 8 14.017 8.44772 14.017 9V11C14.017 11.5523 13.5693 12 13.017 12H12.017V5H22.017V15C22.017 18.3137 19.3307 21 16.017 21H14.017ZM5.0166 21L5.0166 18C5.0166 16.8954 5.91203 16 7.0166 16H10.0166C10.5689 16 11.0166 15.5523 11.0166 15V9C11.0166 8.44772 10.5689 8 10.0166 8H6.0166C5.46432 8 5.0166 8.44772 5.0166 9V11C5.0166 11.5523 4.56889 12 4.0166 12H3.0166V5H13.0166V15C13.0166 18.3137 10.3303 21 7.0166 21H5.0166Z"></path></svg>
+        <p class="text-xl md:text-2xl font-serif text-slate-700 italic leading-relaxed">"{{ $quote['text'] }}"</p>
+        <p class="text-sm font-bold text-indigo-600 mt-4 tracking-wide uppercase">— {{ $quote['author'] }}</p>
+    </div>
+
     <!-- Featured Section -->
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <!-- Popular Book -->
@@ -174,6 +182,28 @@
                 </li>
                 @endauth
             </ul>
+        </div>
+    </div>
+
+    <!-- New Arrivals -->
+    <div>
+        <h3 class="text-xl font-bold text-slate-800 mb-6 flex items-center">
+            <span class="w-2 h-8 bg-indigo-500 rounded-full mr-3"></span>
+            Yeni Eklenenler
+        </h3>
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+            @foreach($latestBooks as $book)
+            <a href="{{ route('books.show', $book->id) }}" class="group">
+                <div class="relative aspect-[2/3] rounded-xl overflow-hidden shadow-md mb-3 bg-slate-100">
+                    <img src="{{ $book->cover ?? 'https://easydrawingguides.com/wp-content/uploads/2020/10/how-to-draw-an-open-book-featured-image-1200.png' }}" alt="{{ $book->title }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-3">
+                        <span class="text-white text-xs font-bold">İncele</span>
+                    </div>
+                </div>
+                <h4 class="font-bold text-slate-800 text-sm truncate group-hover:text-indigo-600 transition-colors">{{ $book->title }}</h4>
+                <p class="text-xs text-slate-500 truncate">{{ $book->author }}</p>
+            </a>
+            @endforeach
         </div>
     </div>
 
