@@ -30,6 +30,11 @@ Route::resource("genres", GenreController::class);
 // Arama işlemleri
 Route::get('/search/suggestions', [UtilityController::class, 'searchSuggetions'])->name('search.suggestions');
 Route::get('/search/results', [UtilityController::class, 'searchResults'])->name('search.results');
+
+// Footer Pages
+Route::get('/privacy', [UtilityController::class, 'privacy'])->name('privacy');
+Route::get('/terms', [UtilityController::class, 'terms'])->name('terms');
+Route::get('/contact', [UtilityController::class, 'contact'])->name('contact');
 Route::post('/notifications/read', [UtilityController::class, 'markNotificationsRead'])->name('notifications.read')->middleware('auth');
 
 // Ödünç Alma işlemleri (giriş ve doğrulama gerekli)

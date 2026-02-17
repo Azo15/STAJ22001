@@ -176,9 +176,9 @@
         <div class="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-4">
             <p class="text-slate-500 text-sm">© {{ date('Y') }} BRS Library System. Tüm hakları saklıdır.</p>
             <div class="flex gap-6 text-slate-400">
-                <a href="#" class="hover:text-indigo-600 transition-colors">Gizlilik</a>
-                <a href="#" class="hover:text-indigo-600 transition-colors">Şartlar</a>
-                <a href="#" class="hover:text-indigo-600 transition-colors">İletişim</a>
+                <a href="{{ route('privacy') }}" class="hover:text-indigo-600 transition-colors">Gizlilik</a>
+                <a href="{{ route('terms') }}" class="hover:text-indigo-600 transition-colors">Şartlar</a>
+                <a href="{{ route('contact') }}" class="hover:text-indigo-600 transition-colors">İletişim</a>
             </div>
         </div>
     </footer>

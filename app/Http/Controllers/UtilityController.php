@@ -147,4 +147,19 @@ class UtilityController extends Controller
         Auth::user()->unreadNotifications->markAsRead();
         return response()->json(['success' => true]);
     }
+
+    public function privacy()
+    {
+        return view('pages.privacy');
+    }
+
+    public function terms()
+    {
+        return view('pages.terms');
+    }
+
+    public function contact()
+    {
+        return view('pages.contact');
+    }
 }
