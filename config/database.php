@@ -29,7 +29,12 @@ return [
     */
 
     'connections' => [
-        // Bağlantı tanımları burada yer alıyor...
+        'demo_sqlite' => [
+            'driver' => 'sqlite',
+            'database' => env('DEMO_DB_PATH', database_path('demo.sqlite')),
+            'prefix' => '',
+            'foreign_key_constraints' => true,
+        ],
     ],
 
     /*
