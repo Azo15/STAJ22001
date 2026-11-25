@@ -16,6 +16,7 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware) {
 
+        $middleware->web(prepend: [\App\Http\Middleware\ReadOnlyDemo::class]);
         $middleware->append(EnsureUserHasRole::class);
         $middleware->alias([
             'role' => EnsureUserHasRole::class

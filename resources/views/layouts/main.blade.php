@@ -9,6 +9,13 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 </head>
 <body class="font-sans antialiased bg-slate-50 text-slate-900 selection:bg-fuchsia-500 selection:text-white flex flex-col min-h-screen">
+    @if(config('demo.enabled'))
+        <aside class="bg-amber-100 p-4 text-center text-slate-900">
+            Bu, projenin salt okunur demo sürümüdür. Örnek kataloğu inceleyebilirsiniz.
+            Tüm özellikler için <a class="underline" href="https://github.com/Azo15/STAJ22001#readme">kaynak kodunu ve kurulum adımlarını açın</a>.
+        </aside>
+    @endif
+
 
     <!-- Top Navigation Bar -->
     <nav class="sticky top-0 z-50 bg-white border-b border-slate-200 shadow-sm">
